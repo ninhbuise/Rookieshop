@@ -10,13 +10,15 @@ import lombok.Data;
 
 @Entity
 @Data
-@Table(name ="address")
-public class Address {
+@Table(name = "prodict_detail")
+public class ProductDetail {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
-    private String city;
-    private String district;
-    private String ward;
-    private String street;
+    private String brand;
+    private String brand_orgin;
+    private String made_in;
+    private String material;
+    private String sku;
+    private String description;
 }

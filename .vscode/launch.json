@@ -1,0 +1,24 @@
+{
+    "configurations": [
+        {
+            "type": "java",
+            "name": "Spring Boot-RookieserverApplication<rookieserver>",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "console": "internalConsole",
+            "mainClass": "com.enashtech.rookieserver.RookieserverApplication",
+            "projectName": "rookieserver",
+            "args": ""
+        },
+        {
+            "type": "java",
+            "name": "Spring Boot-RookiescilientApplication<rookiescilient>",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "console": "internalConsole",
+            "mainClass": "com.enashtech.rookiescilient.RookiescilientApplication",
+            "projectName": "rookiescilient",
+            "args": ""
+        }
+    ]
+}
