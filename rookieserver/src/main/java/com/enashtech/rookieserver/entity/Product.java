@@ -31,7 +31,7 @@ public class Product {
     private List<Size> sizes;
     @OneToMany(mappedBy = "product", fetch = FetchType.LAZY)
     private List<Color> colors;
-    @ManyToMany
+    @OneToMany(mappedBy = "product", fetch = FetchType.LAZY)
     private List<Image> images;
     @ManyToOne
     @JoinColumn(name = "store", nullable = false)

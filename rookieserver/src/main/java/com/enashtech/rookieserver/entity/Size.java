@@ -9,6 +9,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
 
 @Entity
 @Data
@@ -21,5 +23,7 @@ public class Size {
 
     @ManyToOne
     @JoinColumn(name = "product", nullable = false)
+    @EqualsAndHashCode.Exclude
+    @ToString.Exclude
     private Product product;
 }

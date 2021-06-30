@@ -12,17 +12,21 @@ import javax.persistence.PrePersist;
 import javax.persistence.Table;
 
 import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
 
 @Entity
 @Data
-@Table(name = "order")
+@Table(name = "\"Order\"")
 public class Order implements Serializable{
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
     @ManyToOne
-    @JoinColumn(name = "user_id")
-    private User user;
+    @JoinColumn(name = "customer_id", nullable = false)
+    @EqualsAndHashCode.Exclude
+    @ToString.Exclude
+    private Customer customer;
     private Date created;    
     
     @PrePersist

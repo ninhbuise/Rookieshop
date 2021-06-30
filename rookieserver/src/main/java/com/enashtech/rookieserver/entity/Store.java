@@ -1,7 +1,6 @@
 package com.enashtech.rookieserver.entity;
 
 import java.util.List;
-import java.util.Objects;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -13,6 +12,8 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
 
 @Entity
 @Data
@@ -26,5 +27,7 @@ public class Store {
     private List<Product> products;
     @ManyToOne
     @JoinColumn(name = "address_id")
+    @EqualsAndHashCode.Exclude
+    @ToString.Exclude
     private Address address;
 }
