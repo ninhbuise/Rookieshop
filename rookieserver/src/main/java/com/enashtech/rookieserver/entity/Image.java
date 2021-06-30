@@ -1,5 +1,7 @@
 package com.enashtech.rookieserver.entity;
 
+import java.io.Serializable;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -15,7 +17,7 @@ import lombok.ToString;
 @Entity
 @Data
 @Table(name = "image")
-public class Image {
+public class Image implements Serializable{
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;

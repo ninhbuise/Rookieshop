@@ -1,7 +1,7 @@
 package com.enashtech.rookieserver.entity;
 
+import java.io.Serializable;
 import java.util.Date;
-import java.util.Objects;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -12,15 +12,22 @@ import javax.persistence.PrePersist;
 import javax.persistence.Table;
 
 import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
 
 @Entity
 @Data
 @Table(name = "review")
-public class Review {
+public class Review implements Serializable{
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-    private String userName;
+    
+    @ManyToOne
+    @JoinColumn(name = "customer_id", nullable = false)
+    @EqualsAndHashCode.Exclude
+    @ToString.Exclude
+    private Customer customer;
     private String comment;
     private int rating;
  

@@ -1,5 +1,6 @@
 package com.enashtech.rookieserver.entity;
 
+import java.io.Serializable;
 import java.util.List;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -18,16 +19,16 @@ import lombok.ToString;
 @Entity
 @Data
 @Table(name = "store")
-public class Store {
+public class Store implements Serializable{
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
     private String name;
     @OneToMany(mappedBy = "store", fetch = FetchType.EAGER)
     private List<Product> products;
-    @ManyToOne
-    @JoinColumn(name = "address_id")
-    @EqualsAndHashCode.Exclude
-    @ToString.Exclude
-    private Address address;
+    
+    private String city;
+    private String district;
+    private String ward;
+    private String street;
 }

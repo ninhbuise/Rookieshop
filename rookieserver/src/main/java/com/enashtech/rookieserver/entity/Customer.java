@@ -1,5 +1,6 @@
 package com.enashtech.rookieserver.entity;
 
+import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
@@ -8,9 +9,9 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
+import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Table;
 
 import lombok.Data;
@@ -20,12 +21,13 @@ import lombok.ToString;
 @Entity
 @Data
 @Table(name = "customer")
-public class Customer {
+public class Customer implements Serializable{
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
-    @ManyToOne
-    @JoinColumn(name = "user_id")
+
+    @OneToOne(mappedBy = "customer")
+    @PrimaryKeyJoinColumn
     @EqualsAndHashCode.Exclude
     @ToString.Exclude
     private User user;
@@ -34,11 +36,19 @@ public class Customer {
     private String phone;
     private String email;
     private Date birth_day;
-    @ManyToOne 
-    @JoinColumn(name = "address_id")
+
+    @OneToMany(mappedBy = "customer", fetch = FetchType.LAZY)
     @EqualsAndHashCode.Exclude
     @ToString.Exclude
-    private Address address;
+    private List<Address> addresses;
+
     @OneToMany(mappedBy = "customer", fetch = FetchType.LAZY)
+    @EqualsAndHashCode.Exclude
+    @ToString.Exclude
     private List<Order> order;
+
+    @OneToMany(mappedBy = "customer", fetch = FetchType.LAZY)
+    @EqualsAndHashCode.Exclude
+    @ToString.Exclude
+    private List<Review> reviews;
 }

@@ -1,13 +1,13 @@
 package com.enashtech.rookieserver.entity;
 
-import java.util.Collection;
+import java.io.Serializable;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.OneToMany;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import lombok.Data;
@@ -17,7 +17,7 @@ import lombok.ToString;
 @Entity
 @Data
 @Table(name ="address")
-public class Address {
+public class Address implements Serializable{
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
@@ -26,8 +26,9 @@ public class Address {
     private String ward;
     private String street;
 
-    @OneToMany(mappedBy = "address", cascade = CascadeType.ALL)
+    @ManyToOne
+    @JoinColumn(name = "customer_id")
     @EqualsAndHashCode.Exclude
     @ToString.Exclude
-    private Collection<Customer> customers;
+    private Customer customer;
 }
