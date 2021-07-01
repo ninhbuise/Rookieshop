@@ -8,7 +8,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.MapsId;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
@@ -34,8 +33,7 @@ public class User implements Serializable{
     private String url_avatar;
 
     @OneToOne(cascade = CascadeType.ALL)
-    @MapsId
-    @JoinColumn(name = "costomer_id", referencedColumnName = "id")
+    @JoinColumn(name = "customer_id", referencedColumnName = "id")
     @EqualsAndHashCode.Exclude
     @ToString.Exclude
     private Customer customer;
