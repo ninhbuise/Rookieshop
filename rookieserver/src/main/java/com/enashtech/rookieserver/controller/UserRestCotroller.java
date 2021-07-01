@@ -1,14 +1,11 @@
-package com.enashtech.rookieserver.rest;
+package com.enashtech.rookieserver.controller;
 
 import java.util.List;
-import java.util.Optional;
 
-import com.enashtech.rookieserver.HandleException.UserNotFoundException;
 import com.enashtech.rookieserver.entity.User;
-import com.enashtech.rookieserver.repository.UserRepository;
+import com.enashtech.rookieserver.service.UserService;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -22,43 +19,35 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/api")
 public class UserRestCotroller {
+    private final UserService userService;
+
     @Autowired
-    UserRepository userRepository;
+    public UserRestCotroller(UserService userService){
+        this.userService = userService;
+    }
 
     @GetMapping("/users")
     List<User> getUsers(){
-        return userRepository.findAll();
+        return userService.getUsers();
     }
 
     @GetMapping("/user/{id}")
     User getUserById(@PathVariable int id){
-        return userRepository.findById(id)
-        .orElseThrow(() -> new UserNotFoundException(id));
+        return userService.getUserById(id);
     }
 
     @PostMapping("/user")
-    User newUser(@RequestBody User newUser){
-        return userRepository.save(newUser);
+    User addNewUser(@RequestBody User newUser){
+        return userService.addNewUser(newUser);
     }
 
     @PutMapping("/user/{id}")
     User updateUser(@RequestBody User newUser, @PathVariable int id) {
-    
-    return userRepository.findById(id)
-        .map(user -> {
-            user.setPass_word(newUser.getPass_word());
-            user.setUrl_avatar(newUser.getUrl_avatar());
-            user.setUserRole(newUser.getUserRole());
-            return userRepository.save(user);
-        })
-        .orElseGet(() -> {
-            newUser.setId(id);
-            return userRepository.save(newUser);
-        });
+        return userService.updateUser(newUser, id);
     }
 
     @DeleteMapping("/user/{id}")
     void deleteUser(@PathVariable int id) {
-        userRepository.deleteById(id);
+        userService.deleteUser(id);
     }
 }

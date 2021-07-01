@@ -1,4 +1,4 @@
-package com.enashtech.rookieserver.HandleException;
+package com.enashtech.rookieserver.handleException;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ControllerAdvice;

@@ -25,14 +25,14 @@ public class User implements Serializable{
     private String user_name;
     private String pass_word;
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne
     @JoinColumn(name = "user_role_id", referencedColumnName = "id")
     @EqualsAndHashCode.Exclude
     @ToString.Exclude
     private UserRole userRole;    
     private String url_avatar;
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne
     @JoinColumn(name = "customer_id", referencedColumnName = "id")
     @EqualsAndHashCode.Exclude
     @ToString.Exclude

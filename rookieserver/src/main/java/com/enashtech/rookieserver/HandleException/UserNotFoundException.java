@@ -1,4 +1,4 @@
-package com.enashtech.rookieserver.HandleException;
+package com.enashtech.rookieserver.handleException;
 
 public class UserNotFoundException extends RuntimeException{
     public UserNotFoundException(int id){
