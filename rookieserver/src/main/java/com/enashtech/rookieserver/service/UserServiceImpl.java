@@ -38,9 +38,9 @@ public class UserServiceImpl implements UserService{
     public User updateUser(User newUser, int id) {
         return userRepository.findById(id)
             .map(user -> {
-                user.setPass_word(newUser.getPass_word());
+                user.setPassword(newUser.getPassword());
                 user.setUrl_avatar(newUser.getUrl_avatar());
-                user.setUserRole(newUser.getUserRole());
+                user.setUserRoles(newUser.getUserRoles());
                 return userRepository.save(user);
             })
             .orElseGet(() -> {

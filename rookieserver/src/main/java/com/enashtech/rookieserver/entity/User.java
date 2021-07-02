@@ -1,13 +1,14 @@
 package com.enashtech.rookieserver.entity;
 
 import java.io.Serializable;
+import java.util.Set;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
@@ -22,14 +23,13 @@ public class User implements Serializable{
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
-    private String user_name;
-    private String pass_word;
+    private String username;
+    private String password;
 
-    @OneToOne
-    @JoinColumn(name = "user_role_id", referencedColumnName = "id")
+    @OneToMany
     @EqualsAndHashCode.Exclude
     @ToString.Exclude
-    private UserRole userRole;    
+    private Set<UserRole> userRoles;    
     private String url_avatar;
 
     @OneToOne
@@ -37,4 +37,9 @@ public class User implements Serializable{
     @EqualsAndHashCode.Exclude
     @ToString.Exclude
     private Customer customer;
+
+    public User(String username, String password){
+        this.username = username;
+        this.password = password;
+    }
 }

@@ -1,17 +1,8 @@
-INSERT INTO user_role VALUES (
-	1,
-	'ADMIN'
-);
+INSERT INTO user_role (id, name) VALUES 
+	(3, 'ADMIN'),
+	(2, 'STORE'),
+	(1, 'CUSTOMER');
 
-INSERT INTO user_role VALUES (
-	2,
-	'CUSTOMER'
-);
-
-INSERT INTO user_role VALUES (
-	3,
-	'STORE'
-);
 
 insert into "user" values (
 	1,
