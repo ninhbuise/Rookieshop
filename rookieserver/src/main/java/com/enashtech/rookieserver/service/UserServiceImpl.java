@@ -40,7 +40,7 @@ public class UserServiceImpl implements UserService{
             .map(user -> {
                 user.setPassword(newUser.getPassword());
                 user.setUrl_avatar(newUser.getUrl_avatar());
-                user.setUserRoles(newUser.getUserRoles());
+                user.setRoles(newUser.getRoles());
                 return userRepository.save(user);
             })
             .orElseGet(() -> {

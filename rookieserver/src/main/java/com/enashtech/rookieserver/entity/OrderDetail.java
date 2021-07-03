@@ -7,6 +7,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.validation.constraints.NotEmpty;
 
 import lombok.Data;
 
@@ -19,7 +20,9 @@ public class OrderDetail implements Serializable{
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "ORDER_ID", nullable = false)
     private Order order;
+    @NotEmpty
     private int amount;
+    @NotEmpty
     @ManyToOne
     @JoinColumn(name = "product", nullable = false)
     private Product product;

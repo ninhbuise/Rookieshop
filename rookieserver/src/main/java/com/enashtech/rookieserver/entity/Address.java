@@ -6,15 +6,11 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 
 import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
 
 @Entity
 @Data
@@ -26,13 +22,13 @@ public class Address implements Serializable{
     @NotBlank
     @Size(min=3, max = 50)
     private String city;
+    @NotBlank
+    @Size(min=3, max = 50)
     private String district;
+    @NotBlank
+    @Size(min=3, max = 50)
     private String ward;
+    @NotBlank
+    @Size(min=3, max = 50)
     private String street;
-
-    @ManyToOne
-    @JoinColumn(name = "customer_id")
-    @EqualsAndHashCode.Exclude
-    @ToString.Exclude
-    private Customer customer;
 }

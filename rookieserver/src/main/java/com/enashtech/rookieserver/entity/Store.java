@@ -7,10 +7,16 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
 
 import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
 
 @Entity
 @Data
@@ -19,12 +25,20 @@ public class Store implements Serializable{
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
+    @NotBlank
+    @Size(min=3, max = 30)
     private String name;
     @OneToMany(mappedBy = "store", fetch = FetchType.EAGER)
     private List<Product> products;
     
-    private String city;
-    private String district;
-    private String ward;
-    private String street;
+    @ManyToOne
+    @JoinColumn(name = "owner", nullable = false)
+    @EqualsAndHashCode.Exclude
+    @ToString.Exclude
+    private User user;
+
+    @OneToMany
+    @EqualsAndHashCode.Exclude
+    @ToString.Exclude
+    private List<Address> addresses;
 }

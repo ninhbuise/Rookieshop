@@ -11,14 +11,14 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api/v1")
 public class ApiController {
 
-    @GetMapping("/user")
-    @PreAuthorize("hasRole('USER') or hasRole('PM') or hasRole('ADMIN')")
+    @GetMapping("/")
+    @PreAuthorize("hasRole('CUSTOMER') or hasRole('STORE') or hasRole('ADMIN')")
     public String userAccess() {
         return "User Content.";
     }
 
-    @GetMapping("/pm")
-    @PreAuthorize("hasRole('PM')")
+    @GetMapping("/store")
+    @PreAuthorize("hasRole('STORE')")
     public String moderatorAccess() {
         return "Moderator Board.";
     }

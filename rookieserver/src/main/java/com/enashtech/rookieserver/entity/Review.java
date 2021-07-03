@@ -7,6 +7,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.PrePersist;
 import javax.persistence.Table;
@@ -28,6 +29,7 @@ public class Review implements Serializable{
     @EqualsAndHashCode.Exclude
     @ToString.Exclude
     private Customer customer;
+    @Lob
     private String comment;
     private int rating;
  

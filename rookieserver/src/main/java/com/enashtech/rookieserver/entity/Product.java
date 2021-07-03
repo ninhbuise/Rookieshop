@@ -2,6 +2,7 @@ package com.enashtech.rookieserver.entity;
 
 import java.io.Serializable;
 import java.util.List;
+import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
@@ -15,6 +16,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Table;
+import javax.validation.constraints.NotEmpty;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -34,18 +36,20 @@ public class Product implements Serializable{
     @EqualsAndHashCode.Exclude
     @ToString.Exclude
     private ProductType productType;
+    @NotEmpty
     private double price;
+    @NotEmpty
     private int quantity;
 
-    @OneToMany(mappedBy = "product", fetch = FetchType.LAZY)
+    @OneToMany
     @EqualsAndHashCode.Exclude
     @ToString.Exclude
-    private List<Size> sizes;
+    private Set<Size> sizes;
 
-    @OneToMany(mappedBy = "product", fetch = FetchType.LAZY)
+    @OneToMany
     @EqualsAndHashCode.Exclude
     @ToString.Exclude
-    private List<Color> colors;
+    private Set<Color> colors;
 
     @OneToMany(mappedBy = "product", fetch = FetchType.LAZY)
     @EqualsAndHashCode.Exclude
