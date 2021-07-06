@@ -11,13 +11,11 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
-
-import org.hibernate.annotations.NaturalId;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -36,7 +34,7 @@ public class User implements Serializable{
     @NotBlank
     private String password;
 
-    @OneToMany
+    @ManyToMany
     @EqualsAndHashCode.Exclude
     @ToString.Exclude
     private Set<Role> roles;  
@@ -48,7 +46,6 @@ public class User implements Serializable{
     private Image avatar;
 
     @Enumerated(EnumType.STRING)
-    @NaturalId
     @Column(length = 60)
     private Status status;
 

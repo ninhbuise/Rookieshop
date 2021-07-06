@@ -20,29 +20,28 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api/v1/")
 public class CustomerController {
     private CustomerService customerService;
-
     @Autowired
     public CustomerController(CustomerService customerService){
         this.customerService = customerService;
     }
 
     @GetMapping("/customers")
-    public List<Customer> getAllCustomer(){
+    List<Customer> getAllCustomer(){
         return customerService.getAllCustomers();
     }
 
     @GetMapping("/customer/{id}")
-    public Customer getCustomerById(@PathVariable int id){
+    Customer getCustomerById(@PathVariable int id){
         return customerService.findCustomerById(id);
     }
 
     @PostMapping("/customer")
-    public Customer addNewCustomer(@RequestBody Customer newCustomer){
+    Customer addNewCustomer(@RequestBody Customer newCustomer){
         return customerService.addNewCustomer(newCustomer);
     }
 
-    @PutMapping("/customer")
-    public Customer updatCustomer(@RequestBody Customer newCustomer, @PathVariable int id){
+    @PutMapping("/customer/{id}")
+    Customer updatCustomer(@RequestBody Customer newCustomer, @PathVariable int id){
         return customerService.updateCustomer(newCustomer, id);
     }
 }

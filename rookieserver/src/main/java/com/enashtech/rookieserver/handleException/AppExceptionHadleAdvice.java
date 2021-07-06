@@ -7,20 +7,18 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
 @ControllerAdvice
-public class AppNotFoundAdvice {
-    //User not found handler
+public class AppExceptionHadleAdvice {
     @ResponseBody
-    @ExceptionHandler(UserNotFoundException.class)
+    @ExceptionHandler(NotFoundExecptionHandle.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
-    String UsernotFoundHandler(UserNotFoundException ex) {
-        return ex.getMessage();
-    } 
-
-    //Customer not found handler
-    @ResponseBody
-    @ExceptionHandler(CustomerNotFoundException.class)
-    @ResponseStatus(HttpStatus.NOT_FOUND)
-    String CustomernotFoundHandler(CustomerNotFoundException ex) {
+    String NotFoundExecptionHandle(NotFoundExecptionHandle ex) {
         return ex.getMessage();
     }
+
+    @ResponseBody
+    @ExceptionHandler(RuntimeExceptionHandle.class)
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    String RuntimeExceptionHandle(RuntimeExceptionHandle ex) {
+        return ex.getMessage();
+    } 
 }

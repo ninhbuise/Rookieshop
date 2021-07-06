@@ -18,8 +18,6 @@ import javax.persistence.PrePersist;
 import javax.persistence.Table;
 import javax.validation.constraints.Pattern;
 
-import org.hibernate.annotations.NaturalId;
-
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
@@ -43,7 +41,6 @@ public class Order implements Serializable{
     private Address addresses;
 
     @Enumerated(EnumType.STRING)
-    @NaturalId
     @Column(length = 60)
     private Status status;
 

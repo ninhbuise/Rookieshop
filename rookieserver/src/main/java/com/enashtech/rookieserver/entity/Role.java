@@ -11,8 +11,6 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
-import org.hibernate.annotations.NaturalId;
-
 import lombok.Data;
 
 @Entity
@@ -23,7 +21,6 @@ public class Role implements Serializable{
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
     @Enumerated(EnumType.STRING)
-    @NaturalId
     @Column(length = 60)
     private RoleName name;
 }

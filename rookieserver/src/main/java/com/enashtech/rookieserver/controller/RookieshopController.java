@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
-@RequestMapping("/api/v1")
+@RequestMapping("/api/rookieshop")
 public class RookieshopController {
     private ProductService productService;
 
@@ -22,7 +22,7 @@ public class RookieshopController {
         this.productService = productService;
     }
 
-    @GetMapping("/rookieshop")
+    @GetMapping()
     public List<Product> getAllProducts(){
         return productService.getAllproducts();
     }

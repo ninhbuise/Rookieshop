@@ -3,7 +3,7 @@ package com.enashtech.rookieserver.service;
 import java.util.List;
 
 import com.enashtech.rookieserver.entity.Customer;
-import com.enashtech.rookieserver.handleException.CustomerNotFoundException;
+import com.enashtech.rookieserver.handleException.NotFoundExecptionHandle;
 import com.enashtech.rookieserver.repository.CustomerRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,7 +26,7 @@ public class CustomerServiceImpl implements CustomerService{
     @Override
     public Customer findCustomerById(int id) {
         return customerRepository.findById(id)
-            .orElseThrow(() -> new CustomerNotFoundException(id));
+            .orElseThrow(() -> new NotFoundExecptionHandle("Could not found customer:" + id));
     }
 
     @Override

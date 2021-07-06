@@ -9,6 +9,8 @@ public interface UserService {
     public User getUserById(int id);
     public User addNewUser(User newUser);
     public User updateUser(User newUser, int id);
+    public User updateUserStatus(int id, String status);
+    public User updateUserRole(int id, List<String> roles);
     public void deleteUser(int id);
     public boolean existsByUsername(String username);
 }

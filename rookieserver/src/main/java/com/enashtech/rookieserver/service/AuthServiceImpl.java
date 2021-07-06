@@ -7,10 +7,11 @@ import java.util.stream.Collectors;
 
 import com.enashtech.rookieserver.entity.RoleName;
 import com.enashtech.rookieserver.entity.User;
+import com.enashtech.rookieserver.handleException.RuntimeExceptionHandle;
+import com.enashtech.rookieserver.entity.AdminDTO;
 import com.enashtech.rookieserver.entity.Customer;
 import com.enashtech.rookieserver.entity.Role;
 import com.enashtech.rookieserver.payload.request.LoginRequest;
-import com.enashtech.rookieserver.payload.request.SignupRequest;
 import com.enashtech.rookieserver.payload.response.JwtResponse;
 import com.enashtech.rookieserver.payload.response.MessageResponse;
 import com.enashtech.rookieserver.security.jwt.JwtUtils;
@@ -76,69 +77,55 @@ public class AuthServiceImpl implements AuthService{
     }
 
     @Override
-    public ResponseEntity<?> register(SignupRequest signUpRequest) {
-        if (userService.existsByUsername(signUpRequest.getUsername())) {
+    public ResponseEntity<?> register(Customer customer) {
+        if (userService.existsByUsername(customer.getUser().getUsername())) {
             return ResponseEntity
                 .badRequest()
                 .body(new MessageResponse("Error: Username is already taken!"));
         }
         
-        Customer newCustomer = signUpRequest.getCustomer();
-        if(newCustomer != null){
-            if(customerService.existsByEmail(newCustomer.getEmail())){
-                return ResponseEntity
-                .badRequest()
-                .body(new MessageResponse("Error: Email is already taken!"));
-            }
-
-            if(customerService.existsByPhone(newCustomer.getPhone())){
-                return ResponseEntity
-                .badRequest()
-                .body(new MessageResponse("Error: Phone is already taken!"));
-            }
+        if(customerService.existsByEmail(customer.getEmail())){
+            return ResponseEntity
+            .badRequest()
+            .body(new MessageResponse("Error: Email is already taken!"));
         }
 
-        // Create new user's account
-        User user = new User(signUpRequest.getUsername(),
-                             encoder.encode(signUpRequest.getPassword()));
-
-        Set<String> strRoles = signUpRequest.getRole();
-        Set<Role> roles = new HashSet<>();
-
-        if (strRoles == null) {
-            Role userRole = roleService.findByName(RoleName.CUSTOMER)
-                .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
-            roles.add(userRole);
-        } else {
-            strRoles.forEach(role -> {
-                switch (role.toLowerCase()) {
-                    case "admin":
-                        Role adminRole = roleService.findByName(RoleName.ADMIN)
-                            .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
-                        roles.add(adminRole);
-                        break;
-                    case "store":
-                        Role storeRole = roleService.findByName(RoleName.STORE)
-                            .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
-                        roles.add(storeRole);
-                        break;
-                    default:
-                        Role userRole = roleService.findByName(RoleName.CUSTOMER)
-                            .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
-                        roles.add(userRole);
-                }
-            });
-        }
-
-        user.setRoles(roles);
-
-        if(newCustomer != null){
-            newCustomer.setUser(user);
-            customerService.addNewCustomer(newCustomer);
+        if(customerService.existsByPhone(customer.getPhone())){
+            return ResponseEntity
+            .badRequest()
+            .body(new MessageResponse("Error: Phone is already taken!"));
         }
         
-        userService.addNewUser(user);
+        // Create new user's account
+        User user = new User(customer.getUser().getUsername(),
+                             encoder.encode(customer.getUser().getPassword()));
 
+        Set<Role> roles = new HashSet<>();
+        Role userRole = roleService.findByName(RoleName.CUSTOMER)
+            .orElseThrow(() -> new RuntimeExceptionHandle("Error: Role is not found."));
+        roles.add(userRole);
+        user.setRoles(roles);
+        userService.addNewUser(user);
         return ResponseEntity.ok(new MessageResponse("User registered successfully!"));
+    }
+
+    @Override
+    public ResponseEntity<?> addNewAdmin(AdminDTO adminDTO){
+        if (userService.existsByUsername(adminDTO.getUsername())) {
+            return ResponseEntity
+                .badRequest()
+                .body(new MessageResponse("Error: Username is already taken!"));
+        }
+        // Create new admin's account
+        User admin = new User(adminDTO.getUsername(),
+                             encoder.encode(adminDTO.getPassword()));
+
+        Set<Role> roles = new HashSet<>();
+        Role adminRole = roleService.findByName(RoleName.ADMIN)
+            .orElseThrow(() -> new RuntimeExceptionHandle("Error: Role is not found."));
+        roles.add(adminRole);
+        admin.setRoles(roles);
+        userService.addNewUser(admin);
+        return ResponseEntity.ok(new MessageResponse("Add new user successfully!"));
     }
 }

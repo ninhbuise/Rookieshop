@@ -2,8 +2,8 @@ package com.enashtech.rookieserver.controller;
 
 import javax.validation.Valid;
 
+import com.enashtech.rookieserver.entity.Customer;
 import com.enashtech.rookieserver.payload.request.LoginRequest;
-import com.enashtech.rookieserver.payload.request.SignupRequest;
 import com.enashtech.rookieserver.service.AuthService;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,7 +31,7 @@ public class AuthController {
     }
     
     @PostMapping("/signup")
-    public ResponseEntity<?> registerUser(@Valid @RequestBody SignupRequest signUpRequest) {
-        return authService.register(signUpRequest);
+    public ResponseEntity<?> registerUser(@Valid @RequestBody Customer customer) {
+        return authService.register(customer);
     }
 }
