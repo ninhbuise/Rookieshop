@@ -17,13 +17,10 @@ import lombok.Data;
 public class OrderDetail implements Serializable{
     @Id
     private int id;
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "ORDER_ID", nullable = false)
-    private Order order;
     @NotEmpty
     private int amount;
     @NotEmpty
     @ManyToOne
-    @JoinColumn(name = "product", nullable = false)
+    @JoinColumn(name = "product_id", nullable = false)
     private Product product;
 }

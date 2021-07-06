@@ -10,4 +10,5 @@ public interface UserService {
     public User addNewUser(User newUser);
     public User updateUser(User newUser, int id);
     public void deleteUser(int id);
+    public boolean existsByUsername(String username);
 }

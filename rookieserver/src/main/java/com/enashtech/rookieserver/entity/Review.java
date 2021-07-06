@@ -24,11 +24,6 @@ public class Review implements Serializable{
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     
-    @ManyToOne
-    @JoinColumn(name = "customer_id", nullable = false)
-    @EqualsAndHashCode.Exclude
-    @ToString.Exclude
-    private Customer customer;
     @Lob
     private String comment;
     private int rating;

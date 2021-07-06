@@ -13,9 +13,6 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 
 import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-
 @Entity
 @Data
 @Table(name = "image")
@@ -28,10 +25,4 @@ public class Image implements Serializable{
     private String alt;
     @Size(min=3, max = 90)
     private String url;
-
-    @ManyToOne
-    @JoinColumn(name = "product", nullable = false)
-    @EqualsAndHashCode.Exclude
-    @ToString.Exclude
-    private Product product;
 }

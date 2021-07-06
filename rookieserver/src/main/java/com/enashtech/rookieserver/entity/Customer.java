@@ -9,6 +9,7 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
@@ -31,13 +32,14 @@ public class Customer implements Serializable{
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
     @NotNull
-    @OneToOne(mappedBy = "customer")
+    @OneToOne
+    @JoinColumn(name = "user_id", referencedColumnName = "id")
     @EqualsAndHashCode.Exclude
     @ToString.Exclude
     private User user;
     @NotBlank
     @Size(min=3, max = 30)
-    private String fist_name;
+    private String first_name;
     @NotBlank
     @Size(min=3, max = 30)
     private String last_name;
@@ -54,12 +56,14 @@ public class Customer implements Serializable{
     @ToString.Exclude
     private List<Address> addresses;
 
-    @OneToMany(mappedBy = "customer", fetch = FetchType.LAZY)
+    @OneToMany
+    @JoinColumn(name = "customer_id", referencedColumnName = "id")
     @EqualsAndHashCode.Exclude
     @ToString.Exclude
-    private List<Order> order;
+    private List<Order> orders;
 
-    @OneToMany(mappedBy = "customer", fetch = FetchType.LAZY)
+    @OneToMany
+    @JoinColumn(name = "customer_id", referencedColumnName = "id")
     @EqualsAndHashCode.Exclude
     @ToString.Exclude
     private List<Review> reviews;

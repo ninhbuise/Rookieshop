@@ -30,7 +30,7 @@ public class UserServiceImpl implements UserService{
     }
 
     @Override
-    public User addNewUser(User newUser) {
+    public User addNewUser(User newUser){
         return userRepository.save(newUser);
     }
 
@@ -39,7 +39,7 @@ public class UserServiceImpl implements UserService{
         return userRepository.findById(id)
             .map(user -> {
                 user.setPassword(newUser.getPassword());
-                user.setUrl_avatar(newUser.getUrl_avatar());
+                user.setAvatar(newUser.getAvatar());
                 user.setRoles(newUser.getRoles());
                 return userRepository.save(user);
             })
@@ -53,5 +53,10 @@ public class UserServiceImpl implements UserService{
     @Override
     public void deleteUser(int id) {
         userRepository.deleteById(id);
+    }
+
+    @Override
+    public boolean existsByUsername(String username){
+        return userRepository.existsByUsername(username);
     }
 }

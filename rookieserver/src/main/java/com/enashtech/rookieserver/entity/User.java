@@ -11,8 +11,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
@@ -34,22 +34,18 @@ public class User implements Serializable{
     @Size(min = 3, max = 20)
     private String username;
     @NotBlank
-    @Size(min = 6, max = 40)
     private String password;
 
     @OneToMany
     @EqualsAndHashCode.Exclude
     @ToString.Exclude
-    private Set<UserRole> roles;  
-    @NotBlank
-    @Size(min = 3, max = 90)  
-    private String url_avatar;
+    private Set<Role> roles;  
 
-    @OneToOne
-    @JoinColumn(name = "customer_id", referencedColumnName = "id")
+    @ManyToOne
+    @JoinColumn(name = "avatar")
     @EqualsAndHashCode.Exclude
     @ToString.Exclude
-    private Customer customer;
+    private Image avatar;
 
     @Enumerated(EnumType.STRING)
     @NaturalId

@@ -1,0 +1,144 @@
+package com.enashtech.rookieserver.service;
+
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
+
+import com.enashtech.rookieserver.entity.RoleName;
+import com.enashtech.rookieserver.entity.User;
+import com.enashtech.rookieserver.entity.Customer;
+import com.enashtech.rookieserver.entity.Role;
+import com.enashtech.rookieserver.payload.request.LoginRequest;
+import com.enashtech.rookieserver.payload.request.SignupRequest;
+import com.enashtech.rookieserver.payload.response.JwtResponse;
+import com.enashtech.rookieserver.payload.response.MessageResponse;
+import com.enashtech.rookieserver.security.jwt.JwtUtils;
+import com.enashtech.rookieserver.security.services.UserDetailsImpl;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Service;
+
+@Service
+public class AuthServiceImpl implements AuthService{
+    private final UserService userService;
+    private final CustomerService customerService;
+    private final RoleService roleService;
+    private final AuthenticationManager authenticationManager;
+    private final PasswordEncoder encoder;
+    private final JwtUtils jwtUtils;
+
+    @Autowired
+    AuthServiceImpl(UserService userService, CustomerService customerService, RoleService roleService,
+                    PasswordEncoder encoder, AuthenticationManager authenticationManager, JwtUtils jwtUtils){
+        this.userService = userService;
+        this.customerService = customerService;
+        this.roleService = roleService;
+        this. encoder = encoder;
+        this.authenticationManager = authenticationManager;
+        this.jwtUtils = jwtUtils;
+    }
+
+    @Override
+    public ResponseEntity<?> authenticateUser(LoginRequest loginRequest) {
+        // TODO, authenticate when login
+        // Username, pass from client
+        // com.nashtech.rookies.security.WebSecurityConfig.configure(org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder)
+        // authenticationManagerBuilder.userDetailsService(userDetailsService).passwordEncoder(passwordEncoder());
+        // on this step, we tell to authenticationManager how we load data from database
+        // and the password encoder
+        
+        Authentication authentication = authenticationManager.authenticate(
+            new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword()));
+
+        // if go there, the user/password is correct
+        SecurityContextHolder.getContext().setAuthentication(authentication);
+        // generate jwt to return to client
+        String jwt = jwtUtils.generateJwtToken(authentication);
+
+        UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
+        List<String> roles = userDetails.getAuthorities().stream()
+            .map(item -> item.getAuthority())
+            .collect(Collectors.toList());
+
+        return ResponseEntity.ok(new JwtResponse(jwt,
+                                                 userDetails.getId(),
+                                                 userDetails.getUsername(),
+                                                 roles));
+        
+        // return new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword()).getAuthorities().toString();
+    }
+
+    @Override
+    public ResponseEntity<?> register(SignupRequest signUpRequest) {
+        if (userService.existsByUsername(signUpRequest.getUsername())) {
+            return ResponseEntity
+                .badRequest()
+                .body(new MessageResponse("Error: Username is already taken!"));
+        }
+        
+        Customer newCustomer = signUpRequest.getCustomer();
+        if(newCustomer != null){
+            if(customerService.existsByEmail(newCustomer.getEmail())){
+                return ResponseEntity
+                .badRequest()
+                .body(new MessageResponse("Error: Email is already taken!"));
+            }
+
+            if(customerService.existsByPhone(newCustomer.getPhone())){
+                return ResponseEntity
+                .badRequest()
+                .body(new MessageResponse("Error: Phone is already taken!"));
+            }
+        }
+
+        // Create new user's account
+        User user = new User(signUpRequest.getUsername(),
+                             encoder.encode(signUpRequest.getPassword()));
+
+        Set<String> strRoles = signUpRequest.getRole();
+        Set<Role> roles = new HashSet<>();
+
+        if (strRoles == null) {
+            Role userRole = roleService.findByName(RoleName.CUSTOMER)
+                .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
+            roles.add(userRole);
+        } else {
+            strRoles.forEach(role -> {
+                switch (role.toLowerCase()) {
+                    case "admin":
+                        Role adminRole = roleService.findByName(RoleName.ADMIN)
+                            .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
+                        roles.add(adminRole);
+                        break;
+                    case "store":
+                        Role storeRole = roleService.findByName(RoleName.STORE)
+                            .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
+                        roles.add(storeRole);
+                        break;
+                    default:
+                        Role userRole = roleService.findByName(RoleName.CUSTOMER)
+                            .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
+                        roles.add(userRole);
+                }
+            });
+        }
+
+        user.setRoles(roles);
+
+        if(newCustomer != null){
+            newCustomer.setUser(user);
+            customerService.addNewCustomer(newCustomer);
+        }
+        
+        userService.addNewUser(user);
+
+        return ResponseEntity.ok(new MessageResponse("User registered successfully!"));
+    }
+}

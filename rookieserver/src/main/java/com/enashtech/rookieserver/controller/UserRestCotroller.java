@@ -3,6 +3,7 @@ package com.enashtech.rookieserver.controller;
 import java.util.List;
 
 import com.enashtech.rookieserver.entity.User;
+import com.enashtech.rookieserver.service.CustomerService;
 import com.enashtech.rookieserver.service.UserService;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +22,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class UserRestCotroller {
     private final UserService userService;
 
+
     @Autowired
     public UserRestCotroller(UserService userService){
         this.userService = userService;
@@ -34,11 +36,6 @@ public class UserRestCotroller {
     @GetMapping("/user/{id}")
     User getUserById(@PathVariable int id){
         return userService.getUserById(id);
-    }
-
-    @PostMapping("/user")
-    User addNewUser(@RequestBody User newUser){
-        return userService.addNewUser(newUser);
     }
 
     @PutMapping("/user/{id}")

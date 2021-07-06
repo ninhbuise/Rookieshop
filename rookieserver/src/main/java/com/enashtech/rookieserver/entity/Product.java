@@ -51,13 +51,13 @@ public class Product implements Serializable{
     @ToString.Exclude
     private Set<Color> colors;
 
-    @OneToMany(mappedBy = "product", fetch = FetchType.LAZY)
+    @OneToMany
     @EqualsAndHashCode.Exclude
     @ToString.Exclude
     private List<Image> images;
 
     @ManyToOne
-    @JoinColumn(name = "store", nullable = false)
+    @JoinColumn(name = "store_id", nullable = false)
     @EqualsAndHashCode.Exclude
     @ToString.Exclude
     private Store store;
