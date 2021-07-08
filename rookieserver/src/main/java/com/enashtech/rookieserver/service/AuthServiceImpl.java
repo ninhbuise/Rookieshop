@@ -9,7 +9,7 @@ import com.enashtech.rookieserver.entity.RoleName;
 import com.enashtech.rookieserver.entity.User;
 import com.enashtech.rookieserver.handleException.RuntimeExceptionHandle;
 import com.enashtech.rookieserver.entity.AdminDTO;
-import com.enashtech.rookieserver.entity.Customer;
+import com.enashtech.rookieserver.entity.CustomerDTO;
 import com.enashtech.rookieserver.entity.Role;
 import com.enashtech.rookieserver.payload.request.LoginRequest;
 import com.enashtech.rookieserver.payload.response.JwtResponse;
@@ -77,28 +77,28 @@ public class AuthServiceImpl implements AuthService{
     }
 
     @Override
-    public ResponseEntity<?> register(Customer customer) {
-        if (userService.existsByUsername(customer.getUser().getUsername())) {
+    public ResponseEntity<?> register(CustomerDTO customerDTO) {
+        if (userService.existsByUsername(customerDTO.getUsername())) {
             return ResponseEntity
                 .badRequest()
                 .body(new MessageResponse("Error: Username is already taken!"));
         }
         
-        if(customerService.existsByEmail(customer.getEmail())){
+        if(customerService.existsByEmail(customerDTO.getEmail())){
             return ResponseEntity
             .badRequest()
             .body(new MessageResponse("Error: Email is already taken!"));
         }
 
-        if(customerService.existsByPhone(customer.getPhone())){
+        if(customerService.existsByPhone(customerDTO.getPhone())){
             return ResponseEntity
             .badRequest()
             .body(new MessageResponse("Error: Phone is already taken!"));
         }
         
         // Create new user's account
-        User user = new User(customer.getUser().getUsername(),
-                             encoder.encode(customer.getUser().getPassword()));
+        User user = new User(customerDTO.getUsername(),
+                             encoder.encode(customerDTO.getPassword()));
 
         Set<Role> roles = new HashSet<>();
         Role userRole = roleService.findByName(RoleName.CUSTOMER)

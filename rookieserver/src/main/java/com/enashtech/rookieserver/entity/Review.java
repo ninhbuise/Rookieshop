@@ -13,8 +13,6 @@ import javax.persistence.PrePersist;
 import javax.persistence.Table;
 
 import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
 
 @Entity
 @Data

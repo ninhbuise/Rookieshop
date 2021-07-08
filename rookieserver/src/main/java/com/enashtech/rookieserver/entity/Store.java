@@ -28,8 +28,6 @@ public class Store implements Serializable{
     @NotBlank
     @Size(min=3, max = 30)
     private String name;
-    @OneToMany(mappedBy = "store", fetch = FetchType.EAGER)
-    private List<Product> products;
     
     @ManyToOne
     @JoinColumn(name = "owner", nullable = false)
@@ -41,4 +39,7 @@ public class Store implements Serializable{
     @EqualsAndHashCode.Exclude
     @ToString.Exclude
     private List<Address> addresses;
+
+    public Store(){
+    }
 }

@@ -1,13 +1,20 @@
 package com.enashtech.rookieserver.controller;
 
+import java.util.List;
+
 import com.enashtech.rookieserver.entity.User;
 import com.enashtech.rookieserver.service.UserService;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 
@@ -24,5 +31,31 @@ public class UserRestCotroller {
     @PutMapping("/user/{id}")
     User updateUser(@RequestBody User newUser, @PathVariable int id) {
         return userService.updateUser(newUser, id);
+    }
+
+    @GetMapping("/users")
+    List<User> getUsers(){
+        return userService.getUsers();
+    }
+
+    @GetMapping("/user/{id}")
+    User getUserById(@PathVariable int id){
+        return userService.getUserById(id);
+    }
+
+    @GetMapping("/user")
+    @ResponseBody
+    User getUserByUsername(Authentication authentication){
+        return userService.getUserByUsername(authentication.getName());
+    }
+
+    @PostMapping("/user-status/{id}")
+    User updateUserStatus(@PathVariable int id, @RequestParam String status){
+        return userService.updateUserStatus(id, status);
+    }
+
+    @PostMapping("/user-role/{id}")
+    User updateUserRole(@PathVariable int id, @RequestParam List<String> roles){
+        return userService.updateUserRole(id, roles);
     }
 }

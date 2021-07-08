@@ -2,7 +2,8 @@ package com.enashtech.rookieserver.controller;
 
 import javax.validation.Valid;
 
-import com.enashtech.rookieserver.entity.Customer;
+import com.enashtech.rookieserver.entity.AdminDTO;
+import com.enashtech.rookieserver.entity.CustomerDTO;
 import com.enashtech.rookieserver.payload.request.LoginRequest;
 import com.enashtech.rookieserver.service.AuthService;
 
@@ -31,7 +32,12 @@ public class AuthController {
     }
     
     @PostMapping("/signup")
-    public ResponseEntity<?> registerUser(@Valid @RequestBody Customer customer) {
-        return authService.register(customer);
+    public ResponseEntity<?> registerUser(@Valid @RequestBody CustomerDTO customerDTO) {
+        return authService.register(customerDTO);
+    }
+
+    @PostMapping("/admin")
+    ResponseEntity<?> addNewAdmin(@RequestBody AdminDTO adminDTO){
+        return authService.addNewAdmin(adminDTO);
     }
 }

@@ -39,6 +39,12 @@ public class UserServiceImpl implements UserService{
     }
 
     @Override
+    public User getUserByUsername(String username){
+        return userRepository.findByUsername(username)
+            .orElseThrow(() -> new NotFoundExecptionHandle("Could not found user: " + username));
+    }
+
+    @Override
     public User addNewUser(User newUser){
         return userRepository.save(newUser);
     }

@@ -3,6 +3,9 @@ package com.enashtech.rookieserver.service;
 import java.util.List;
 
 import com.enashtech.rookieserver.entity.Product;
+import com.enashtech.rookieserver.entity.ProductDTO;
+import com.enashtech.rookieserver.entity.Store;
+import com.enashtech.rookieserver.handleException.NotFoundExecptionHandle;
 import com.enashtech.rookieserver.repository.ProductRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,10 +14,12 @@ import org.springframework.stereotype.Service;
 @Service
 public class ProductServiceImpl implements ProductService{
     private final ProductRepository productRepository;
+    private final StoreService storeService;
 
     @Autowired
-    public ProductServiceImpl(ProductRepository productRepository){
+    public ProductServiceImpl(ProductRepository productRepository, StoreService storeService){
         this.productRepository = productRepository;
+        this.storeService = storeService;
     }
 
     @Override
@@ -23,13 +28,20 @@ public class ProductServiceImpl implements ProductService{
     }
 
     @Override
-    public Product getProductById(int id) {
-        return productRepository.getById(id);
+    public Product getfindById(int id) {
+        return productRepository.findById(id)
+            .orElseThrow(() -> new NotFoundExecptionHandle("Could not found product: " + id));
     }
 
     @Override
-    public Product addNewProduct(Product newProduct) {
-        return productRepository.save(newProduct);
+    public Product addNewProduct(ProductDTO newProduct, String owner) {
+        Store store = storeService.findByNameOwner(owner);
+        if(store != null) {
+            Product product = new Product(newProduct);
+            product.setStore(store);
+            return productRepository.save(product);
+        } else 
+            throw new NotFoundExecptionHandle("Could not found Store by owner: " + owner);
     }
 
     @Override
@@ -40,7 +52,6 @@ public class ProductServiceImpl implements ProductService{
                 product.setPrice(newProduct.getPrice());
                 product.setQuantity(newProduct.getQuantity());
                 product.setProductType(newProduct.getProductType());
-                product.setStore(newProduct.getStore());
                 product.setColors(newProduct.getColors());
                 product.setSizes(newProduct.getSizes());
                 product.setProductDetail(newProduct.getProductDetail());
@@ -57,4 +68,8 @@ public class ProductServiceImpl implements ProductService{
         productRepository.deleteById(id);
     }
     
+    @Override
+    public List<ProductDTO> getListProductsByNameOwner(String owner){
+        return productRepository.getListProductsByNameOwner(owner);
+    }
 }

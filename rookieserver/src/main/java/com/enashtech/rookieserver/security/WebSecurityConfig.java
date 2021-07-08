@@ -66,11 +66,12 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         http.cors().and().csrf().disable()
             .exceptionHandling().authenticationEntryPoint(unauthorizedHandler).and()
             .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
-            .authorizeRequests().antMatchers("/api/v1/").hasAnyRole("CUSTOMER", "STORE", "ADMIN")
-            .antMatchers("/api/admin/").hasRole("ADMIN")
-            .antMatchers("/api/store/").hasRole("STORE")
-            .antMatchers("/api/auth/**", "/api/rookieshop").permitAll()
-            .anyRequest().authenticated();
+            .authorizeRequests()
+            .antMatchers("/api/v1/userinfo/").hasAnyRole("CUSTOMER", "STORE", "ADMIN")
+            .antMatchers("/api/v1/users/").hasRole("ADMIN")
+            .antMatchers("/api/auth/**").permitAll()
+            .antMatchers("/api/rookieshop/**").permitAll()
+            .anyRequest().fullyAuthenticated();
         http.addFilterBefore(authenticationJwtTokenFilter(), UsernamePasswordAuthenticationFilter.class);
     }
 }

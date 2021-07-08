@@ -12,6 +12,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import javax.persistence.UniqueConstraint;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
@@ -24,7 +25,14 @@ import lombok.ToString;
 
 @Entity
 @Data
-@Table(name = "customer")
+@Table(name = "customer", uniqueConstraints = {
+    @UniqueConstraint(columnNames = {
+        "phone"
+    }),
+    @UniqueConstraint(columnNames = {
+        "email"
+    })
+})
 public class Customer implements Serializable{
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)

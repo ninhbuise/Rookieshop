@@ -15,7 +15,7 @@ import lombok.Data;
 
 @Entity
 @Data
-@Table(name = "size")
+@Table(name = "sizes")
 public class Size implements Serializable{
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)

@@ -11,12 +11,13 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Table;
-import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.Pattern;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -36,22 +37,22 @@ public class Product implements Serializable{
     @EqualsAndHashCode.Exclude
     @ToString.Exclude
     private ProductType productType;
-    @NotEmpty
+    // @Pattern(regexp="(^([0-9]*[1-9][0-9]*(\\.[0-9]+)?|[0]+\\.[0-9]*[1-9][0-9]*)$)")
     private double price;
-    @NotEmpty
+    // @Pattern(regexp="(^[0-9]\\d*$)")
     private int quantity;
 
-    @OneToMany
+    @ManyToMany
     @EqualsAndHashCode.Exclude
     @ToString.Exclude
     private Set<Size> sizes;
 
-    @OneToMany
+    @ManyToMany
     @EqualsAndHashCode.Exclude
     @ToString.Exclude
     private Set<Color> colors;
 
-    @OneToMany
+    @ManyToMany
     @EqualsAndHashCode.Exclude
     @ToString.Exclude
     private List<Image> images;
@@ -74,4 +75,19 @@ public class Product implements Serializable{
     @EqualsAndHashCode.Exclude
     @ToString.Exclude
     private List<Review> reviews;
+
+    public Product(ProductDTO productDTO) {
+        this.id = productDTO.getId();
+        this.name = productDTO.getName();
+        this.price = productDTO.getPrice();
+        this.productType = productDTO.getProductType();
+        this.quantity = productDTO.getQuantity();
+        this.colors = productDTO.getColors();
+        this.sizes = productDTO.getSizes();
+        this.images = productDTO.getImages();
+        this.productDetail = productDTO.getProductDetail();
+    }
+
+    public Product() {
+    }
 }

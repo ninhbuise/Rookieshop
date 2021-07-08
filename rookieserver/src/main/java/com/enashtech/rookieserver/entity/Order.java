@@ -24,7 +24,7 @@ import lombok.ToString;
 
 @Entity
 @Data
-@Table(name = "\"Order\"")
+@Table(name = "orders")
 public class Order implements Serializable{
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -45,7 +45,7 @@ public class Order implements Serializable{
     private Status status;
 
     @OneToMany
-    @JoinColumn(name = "order_id", referencedColumnName = "id")
+    @JoinColumn(name = "orders_id", referencedColumnName = "id")
     @EqualsAndHashCode.Exclude
     @ToString.Exclude
     private List<OrderDetail> orderDetails;
