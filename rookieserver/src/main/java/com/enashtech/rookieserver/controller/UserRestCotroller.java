@@ -6,6 +6,7 @@ import com.enashtech.rookieserver.entity.User;
 import com.enashtech.rookieserver.service.UserService;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -24,7 +25,7 @@ public class UserRestCotroller {
     private final UserService userService;
 
     @Autowired
-    public UserRestCotroller(UserService userService){
+    public UserRestCotroller(UserService userService) {
         this.userService = userService;
     }
 
@@ -34,28 +35,29 @@ public class UserRestCotroller {
     }
 
     @GetMapping("/users")
-    List<User> getUsers(){
+    // @PreAuthorize("hasRole('ADMIN')")
+    List<User> getUsers() {
         return userService.getUsers();
     }
 
     @GetMapping("/user/{id}")
-    User getUserById(@PathVariable int id){
+    User getUserById(@PathVariable int id) {
         return userService.getUserById(id);
     }
 
     @GetMapping("/user")
     @ResponseBody
-    User getUserByUsername(Authentication authentication){
+    User getUserByUsername(Authentication authentication) {
         return userService.getUserByUsername(authentication.getName());
     }
 
     @PostMapping("/user-status/{id}")
-    User updateUserStatus(@PathVariable int id, @RequestParam String status){
+    User updateUserStatus(@PathVariable int id, @RequestParam String status) {
         return userService.updateUserStatus(id, status);
     }
 
     @PostMapping("/user-role/{id}")
-    User updateUserRole(@PathVariable int id, @RequestParam List<String> roles){
+    User updateUserRole(@PathVariable int id, @RequestParam List<String> roles) {
         return userService.updateUserRole(id, roles);
     }
 }

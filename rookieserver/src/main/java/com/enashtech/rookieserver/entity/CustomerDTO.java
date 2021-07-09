@@ -27,7 +27,7 @@ public class CustomerDTO {
     @Email
     private String email;
     
-    public CustomerDTO(Customer customer){
+    public CustomerDTO(Customer customer) {
         this.username = customer.getUser().getUsername();
         this.password = customer.getUser().getPassword();
         this.first_name = customer.getFirst_name();
@@ -36,7 +36,7 @@ public class CustomerDTO {
         this.phone = customer.getPhone();
     }
 
-    public CustomerDTO(){
+    public CustomerDTO() {
         
     }
 }

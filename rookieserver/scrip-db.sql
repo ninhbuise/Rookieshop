@@ -1,12 +1,12 @@
 INSERT INTO public.color (id,color_name,hex_code) VALUES
-	 (1,'Đen','#FFFFFF'),
-	 (2,'Trắng','#000000');
+	 (1,'Ä�en','#FFFFFF'),
+	 (2,'Tráº¯ng','#000000');
 INSERT INTO public.product_type (id,product_type) VALUES
-	 (1,'Áo Hoodie');
+	 (1,'Ã�o Hoodie');
 INSERT INTO public.roles (id,"name") VALUES
-	 (3,'ADMIN'),
-	 (2,'STORE'),
-	 (1,'CUSTOMER');
+	 (3,'ROLE_ADMIN'),
+	 (2,'ROLE_STORE'),
+	 (1,'ROLE_CUSTOMER');
 INSERT INTO public.sizes (id,size_name) VALUES
 	 (1,'S'),
 	 (2,'M'),
@@ -18,9 +18,9 @@ INSERT INTO public.users (id,"password",status,username,avatar) VALUES
 INSERT INTO public.customer (id,birth_day,email,first_name,last_name,phone,user_id) VALUES
 	 (1,'1999-08-17 00:00:00','ninhbuise@gmail.com','Ninh','Bui','0339737498',1);
 INSERT INTO public.store (id,"name","owner") VALUES
-	 (1,'Shop Cá Cơm',20);
+	 (1,'Shop CÃ¡ CÆ¡m',20);
 INSERT INTO public.product (id,"name",price,quantity,product_type) VALUES
-	 (1,'Áo Hoodie Nỉ Bông Unisex Streetwear Lục Lăng ( unisex nam nữ đều mặc được)',99.0,100,1);
+	 (1,'Ã�o Hoodie Ná»‰ BÃ´ng Unisex Streetwear Lá»¥c LÄƒng ( unisex nam ná»¯ Ä‘á»�u máº·c Ä‘Æ°á»£c)',99.0,100,1);
 INSERT INTO public.user_roles (user_id, role_id) VALUES
 	 (1,3),
 	 (19,3),
@@ -37,4 +37,4 @@ INSERT INTO public.store_products (store_id, products_id) VALUES
 	 
 select * from product p join store_products sp on sp.products_id = p.id
 	join store s on s.id  = sp.store_id 
-		where s."name" like '%Shop Cá Cơm'
+		where s."name" like '%Shop CÃ¡ CÆ¡m'

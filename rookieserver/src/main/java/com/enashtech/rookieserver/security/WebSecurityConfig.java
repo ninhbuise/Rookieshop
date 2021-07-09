@@ -5,6 +5,7 @@ import com.enashtech.rookieserver.security.jwt.JwtAuthTokenFilter;
 import com.enashtech.rookieserver.security.jwt.JwtUtils;
 import com.enashtech.rookieserver.security.services.UserDetailsServiceImpl;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -30,10 +31,11 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     private final UserDetailsServiceImpl userDetailsService;
 
-    final private JwtAuthEntryPoint unauthorizedHandler;
+    private final JwtAuthEntryPoint unauthorizedHandler;
 
     private final JwtUtils jwtUtils;
 
+    @Autowired
     public WebSecurityConfig (UserDetailsServiceImpl userDetailsService, JwtAuthEntryPoint unauthorizedHandler, JwtUtils jwtUtils) {
         this.userDetailsService = userDetailsService;
         this.unauthorizedHandler = unauthorizedHandler;
@@ -67,11 +69,11 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
             .exceptionHandling().authenticationEntryPoint(unauthorizedHandler).and()
             .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
             .authorizeRequests()
-            .antMatchers("/api/v1/userinfo/").hasAnyRole("CUSTOMER", "STORE", "ADMIN")
-            .antMatchers("/api/v1/users/").hasRole("ADMIN")
+            .antMatchers("/api/v1/user/").hasAnyRole("CUSTOMER", "STORE", "ADMIN")
+            .antMatchers("/api/v1/users/").hasAuthority("ROLE_ADMIN")
             .antMatchers("/api/auth/**").permitAll()
             .antMatchers("/api/rookieshop/**").permitAll()
-            .anyRequest().fullyAuthenticated();
+            .anyRequest().authenticated();
         http.addFilterBefore(authenticationJwtTokenFilter(), UsernamePasswordAuthenticationFilter.class);
     }
 }

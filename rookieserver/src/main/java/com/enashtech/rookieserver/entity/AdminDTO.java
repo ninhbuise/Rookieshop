@@ -14,12 +14,12 @@ public class AdminDTO {
     @Size(min = 6, max = 40)
     String password;
 
-    public AdminDTO(User user){
+    public AdminDTO(User user) {
         this.username = user.getUsername();
         this.password = user.getPassword();
     }
 
-    public AdminDTO(){
+    public AdminDTO() {
         
     }
 }

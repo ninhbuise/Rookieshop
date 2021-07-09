@@ -14,7 +14,7 @@ public class CustomerServiceImpl implements CustomerService{
     private final CustomerRepository customerRepository;
 
     @Autowired
-    public CustomerServiceImpl(CustomerRepository customerRepository){
+    public CustomerServiceImpl(CustomerRepository customerRepository) {
         this.customerRepository = customerRepository;
     }
 
@@ -24,13 +24,21 @@ public class CustomerServiceImpl implements CustomerService{
     }
 
     @Override
+    public Customer findCustomerByUserName(String username) {
+        Customer customer = customerRepository.findByUserName(username);
+        if(customer == null)
+            throw new NotFoundExecptionHandle("Could not found customer with username: " + username);
+        return customer;
+    }
+
+    @Override
     public Customer findCustomerById(int id) {
         return customerRepository.findById(id)
             .orElseThrow(() -> new NotFoundExecptionHandle("Could not found customer: " + id));
     }
 
     @Override
-    public Customer addNewCustomer(Customer newCustomer) {
+    public Customer saveCustomer(Customer newCustomer) {
         return customerRepository.save(newCustomer);
     }
 
@@ -54,12 +62,12 @@ public class CustomerServiceImpl implements CustomerService{
     }
 
     @Override
-    public boolean existsByEmail(String email){
+    public boolean existsByEmail(String email) {
         return customerRepository.existsByEmail(email);
     }
 
     @Override
-    public boolean existsByPhone(String phone){
+    public boolean existsByPhone(String phone) {
         return customerRepository.existsByPhone(phone);
     }
 }

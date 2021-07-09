@@ -58,7 +58,7 @@ public class User implements Serializable{
     @Column(length = 60)
     private Status status;
 
-    public User(String username, String password){
+    public User(String username, String password) {
         this.username = username;
         this.password = password;
         this.status = Status.OPEN;

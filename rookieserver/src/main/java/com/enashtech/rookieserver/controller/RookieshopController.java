@@ -23,24 +23,24 @@ public class RookieshopController {
     private ProductService productService;
 
     @Autowired
-    public RookieshopController(ProductService productService){
+    public RookieshopController(ProductService productService) {
         this.productService = productService;
     }
 
     @GetMapping("/rookieshop")
-    public List<Product> getAllProducts(){
+    public List<Product> getAllProducts() {
         return productService.getAllproducts();
     }
 
     @GetMapping("/shop/products")
     @ResponseBody
-    public List<ProductDTO> getListProducts(Authentication authentication){
+    public List<ProductDTO> getListProducts(Authentication authentication) {
         return productService.getListProductsByNameOwner(authentication.getName());
     }
 
     @PostMapping("shop/product")
     @ResponseBody
-    public Product addNewProduct(@RequestBody ProductDTO newProduct, Authentication authentication){
-        return productService.addNewProduct(newProduct, authentication.getName());
+    public Product saveProduct(@RequestBody ProductDTO newProduct, Authentication authentication) {
+        return productService.saveProduct(newProduct, authentication.getName());
     }
 }

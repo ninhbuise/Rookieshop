@@ -40,6 +40,6 @@ public class Store implements Serializable{
     @ToString.Exclude
     private List<Address> addresses;
 
-    public Store(){
+    public Store() {
     }
 }

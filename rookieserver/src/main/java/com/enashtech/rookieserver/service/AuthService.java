@@ -9,5 +9,5 @@ import org.springframework.http.ResponseEntity;
 public interface AuthService {
     ResponseEntity<?> authenticateUser(LoginRequest loginRequest);
     ResponseEntity<?> register(CustomerDTO customerDTO);
-    ResponseEntity<?> addNewAdmin(AdminDTO adminDTO);
+    ResponseEntity<?> saveAdmin(AdminDTO adminDTO);
 }

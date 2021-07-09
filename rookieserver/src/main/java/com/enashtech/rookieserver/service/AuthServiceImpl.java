@@ -37,7 +37,7 @@ public class AuthServiceImpl implements AuthService{
 
     @Autowired
     AuthServiceImpl(UserService userService, CustomerService customerService, RoleService roleService,
-                    PasswordEncoder encoder, AuthenticationManager authenticationManager, JwtUtils jwtUtils){
+                    PasswordEncoder encoder, AuthenticationManager authenticationManager, JwtUtils jwtUtils) {
         this.userService = userService;
         this.customerService = customerService;
         this.roleService = roleService;
@@ -84,13 +84,13 @@ public class AuthServiceImpl implements AuthService{
                 .body(new MessageResponse("Error: Username is already taken!"));
         }
         
-        if(customerService.existsByEmail(customerDTO.getEmail())){
+        if(customerService.existsByEmail(customerDTO.getEmail())) {
             return ResponseEntity
             .badRequest()
             .body(new MessageResponse("Error: Email is already taken!"));
         }
 
-        if(customerService.existsByPhone(customerDTO.getPhone())){
+        if(customerService.existsByPhone(customerDTO.getPhone())) {
             return ResponseEntity
             .badRequest()
             .body(new MessageResponse("Error: Phone is already taken!"));
@@ -101,16 +101,16 @@ public class AuthServiceImpl implements AuthService{
                              encoder.encode(customerDTO.getPassword()));
 
         Set<Role> roles = new HashSet<>();
-        Role userRole = roleService.findByName(RoleName.CUSTOMER)
+        Role userRole = roleService.findByName(RoleName.ROLE_CUSTOMER)
             .orElseThrow(() -> new RuntimeExceptionHandle("Error: Role is not found."));
         roles.add(userRole);
         user.setRoles(roles);
-        userService.addNewUser(user);
+        userService.saveUser(user);
         return ResponseEntity.ok(new MessageResponse("User registered successfully!"));
     }
 
     @Override
-    public ResponseEntity<?> addNewAdmin(AdminDTO adminDTO){
+    public ResponseEntity<?> saveAdmin(AdminDTO adminDTO) {
         if (userService.existsByUsername(adminDTO.getUsername())) {
             return ResponseEntity
                 .badRequest()
@@ -121,11 +121,11 @@ public class AuthServiceImpl implements AuthService{
                              encoder.encode(adminDTO.getPassword()));
 
         Set<Role> roles = new HashSet<>();
-        Role adminRole = roleService.findByName(RoleName.ADMIN)
+        Role adminRole = roleService.findByName(RoleName.ROLE_ADMIN)
             .orElseThrow(() -> new RuntimeExceptionHandle("Error: Role is not found."));
         roles.add(adminRole);
         admin.setRoles(roles);
-        userService.addNewUser(admin);
+        userService.saveUser(admin);
         return ResponseEntity.ok(new MessageResponse("Add new user successfully!"));
     }
 }

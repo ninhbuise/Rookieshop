@@ -17,7 +17,7 @@ public class ProductServiceImpl implements ProductService{
     private final StoreService storeService;
 
     @Autowired
-    public ProductServiceImpl(ProductRepository productRepository, StoreService storeService){
+    public ProductServiceImpl(ProductRepository productRepository, StoreService storeService) {
         this.productRepository = productRepository;
         this.storeService = storeService;
     }
@@ -28,13 +28,13 @@ public class ProductServiceImpl implements ProductService{
     }
 
     @Override
-    public Product getfindById(int id) {
+    public Product findById(int id) {
         return productRepository.findById(id)
             .orElseThrow(() -> new NotFoundExecptionHandle("Could not found product: " + id));
     }
 
     @Override
-    public Product addNewProduct(ProductDTO newProduct, String owner) {
+    public Product saveProduct(ProductDTO newProduct, String owner) {
         Store store = storeService.findByNameOwner(owner);
         if(store != null) {
             Product product = new Product(newProduct);
@@ -69,7 +69,7 @@ public class ProductServiceImpl implements ProductService{
     }
     
     @Override
-    public List<ProductDTO> getListProductsByNameOwner(String owner){
+    public List<ProductDTO> getListProductsByNameOwner(String owner) {
         return productRepository.getListProductsByNameOwner(owner);
     }
 }

@@ -38,7 +38,7 @@ public class Order implements Serializable{
     @ManyToOne
     @EqualsAndHashCode.Exclude
     @ToString.Exclude
-    private Address addresses;
+    private Address address;
 
     @Enumerated(EnumType.STRING)
     @Column(length = 60)
@@ -52,6 +52,7 @@ public class Order implements Serializable{
 
     @PrePersist
     protected void onCreate() {
-      created = new Date();
+      this.created = new Date();
+      this.status = Status.PROCESSING;
     }
 }

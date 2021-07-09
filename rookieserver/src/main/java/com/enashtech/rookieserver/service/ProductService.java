@@ -7,8 +7,8 @@ import com.enashtech.rookieserver.entity.ProductDTO;
 
 public interface ProductService {
     public List<Product> getAllproducts();
-    public Product getfindById(int id);
-    public Product addNewProduct(ProductDTO newProduct, String owner);
+    public Product findById(int id);
+    public Product saveProduct(ProductDTO newProduct, String owner);
     public Product updateProduct(Product newProduct, int id);
     public void deleteProduct(int id);
     public List<ProductDTO> getListProductsByNameOwner(String owner);

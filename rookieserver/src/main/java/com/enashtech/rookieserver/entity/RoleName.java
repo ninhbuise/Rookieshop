@@ -1,7 +1,7 @@
 package com.enashtech.rookieserver.entity;
 
 public enum  RoleName {
-    CUSTOMER,
-    STORE,
-    ADMIN
+    ROLE_CUSTOMER,
+    ROLE_STORE,
+    ROLE_ADMIN
 }

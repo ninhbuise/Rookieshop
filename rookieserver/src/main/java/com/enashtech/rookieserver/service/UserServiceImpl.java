@@ -22,7 +22,7 @@ public class UserServiceImpl implements UserService{
     private final RoleService roleService;
 
     @Autowired
-    public UserServiceImpl(UserRepository userRepository, RoleService roleService){
+    public UserServiceImpl(UserRepository userRepository, RoleService roleService) {
         this.userRepository = userRepository;
         this.roleService = roleService;
     }
@@ -39,13 +39,13 @@ public class UserServiceImpl implements UserService{
     }
 
     @Override
-    public User getUserByUsername(String username){
+    public User getUserByUsername(String username) {
         return userRepository.findByUsername(username)
             .orElseThrow(() -> new NotFoundExecptionHandle("Could not found user: " + username));
     }
 
     @Override
-    public User addNewUser(User newUser){
+    public User saveUser(User newUser) {
         return userRepository.save(newUser);
     }
 
@@ -65,16 +65,16 @@ public class UserServiceImpl implements UserService{
     }
 
     @Override
-    public User updateUserStatus(int id, String status){
+    public User updateUserStatus(int id, String status) {
         return userRepository.findById(id)
             .map(user -> {
                 //Check if user have role ADMIN
-                Role roleAdmin = roleService.findByName(RoleName.ADMIN)
+                Role roleAdmin = roleService.findByName(RoleName.ROLE_ADMIN)
                     .orElseThrow(() -> new RuntimeExceptionHandle("Error: Role is not found."));
                 if(user.getRoles().contains(roleAdmin))
                     throw new RuntimeExceptionHandle("Error: Could not change role for user has role 'ADMIN' user: " + id);
                 //check stats invalid
-                switch(status.toLowerCase()){
+                switch(status.toLowerCase()) {
                     case "locked":
                         user.setStatus(Status.LOCKED);
                     break;
@@ -89,7 +89,7 @@ public class UserServiceImpl implements UserService{
             .orElseThrow(() -> new NotFoundExecptionHandle("Could not found user: " + id));
     }
 
-    public User updateUserRole(int id, List<String> roles){
+    public User updateUserRole(int id, List<String> roles) {
         if(roles.size() == 0)
             throw new RuntimeExceptionHandle("Error: roles can't be empty");
         //lowcase list role
@@ -100,7 +100,7 @@ public class UserServiceImpl implements UserService{
         return userRepository.findById(id)
             .map(user -> {
                 //Check if user have role ADMIN
-                Role roleAdmin = roleService.findByName(RoleName.ADMIN)
+                Role roleAdmin = roleService.findByName(RoleName.ROLE_ADMIN)
                     .orElseThrow(() -> new RuntimeExceptionHandle("Error: Role is not found."));
                 if(user.getRoles().contains(roleAdmin) && !newRoles.contains("admin"))
                     throw new RuntimeExceptionHandle("Error: Could not remove role 'ADMIN' for user has role 'ADMIN' user: " + id);
@@ -109,17 +109,17 @@ public class UserServiceImpl implements UserService{
                 newRoles.forEach(role -> {
                     switch (role.toLowerCase()) {
                         case "admin":
-                            Role adminRole = roleService.findByName(RoleName.ADMIN)
+                            Role adminRole = roleService.findByName(RoleName.ROLE_ADMIN)
                                 .orElseThrow(() -> new RuntimeExceptionHandle("Error: Role is not found."));
                                 userRoles.add(adminRole);
                             break;
                         case "store":
-                            Role storeRole = roleService.findByName(RoleName.STORE)
+                            Role storeRole = roleService.findByName(RoleName.ROLE_STORE)
                                 .orElseThrow(() -> new RuntimeExceptionHandle("Error: Role is not found."));
                                 userRoles.add(storeRole);
                             break;
                         default:
-                            Role userRole = roleService.findByName(RoleName.CUSTOMER)
+                            Role userRole = roleService.findByName(RoleName.ROLE_CUSTOMER)
                                 .orElseThrow(() -> new RuntimeExceptionHandle("Error: Role is not found."));
                                 userRoles.add(userRole);
                     }
@@ -137,7 +137,7 @@ public class UserServiceImpl implements UserService{
     }
 
     @Override
-    public boolean existsByUsername(String username){
+    public boolean existsByUsername(String username) {
         return userRepository.existsByUsername(username);
     }
 }

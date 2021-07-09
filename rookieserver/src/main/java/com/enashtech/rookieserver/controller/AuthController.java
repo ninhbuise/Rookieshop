@@ -37,7 +37,7 @@ public class AuthController {
     }
 
     @PostMapping("/admin")
-    ResponseEntity<?> addNewAdmin(@RequestBody AdminDTO adminDTO){
-        return authService.addNewAdmin(adminDTO);
+    ResponseEntity<?> saveAdmin(@RequestBody AdminDTO adminDTO) {
+        return authService.saveAdmin(adminDTO);
     }
 }

@@ -1,6 +1,7 @@
 package com.enashtech.rookieserver.entity;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -72,4 +73,14 @@ public class Customer implements Serializable{
     @EqualsAndHashCode.Exclude
     @ToString.Exclude
     private List<Review> reviews;
+
+    public Customer() {
+    }
+
+    public List<Order> addOrder(Order order) {
+        if(this.orders.isEmpty())
+            this.orders = new ArrayList<>();
+        this.orders.add(order);
+        return this.orders;
+    }
 }

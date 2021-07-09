@@ -23,4 +23,7 @@ public class Role implements Serializable{
     @Enumerated(EnumType.STRING)
     @Column(length = 60)
     private RoleName name;
+
+    public Role() {
+    }
 }
