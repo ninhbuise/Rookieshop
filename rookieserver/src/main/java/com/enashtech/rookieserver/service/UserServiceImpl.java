@@ -70,9 +70,9 @@ public class UserServiceImpl implements UserService{
             .map(user -> {
                 //Check if user have role ADMIN
                 Role roleAdmin = roleService.findByName(RoleName.ROLE_ADMIN)
-                    .orElseThrow(() -> new RuntimeExceptionHandle("Error: Role is not found."));
+                    .orElseThrow(() -> new RuntimeExceptionHandle("Role is not found."));
                 if(user.getRoles().contains(roleAdmin))
-                    throw new RuntimeExceptionHandle("Error: Could not change role for user has role 'ADMIN' user: " + id);
+                    throw new RuntimeExceptionHandle("Could not change role for user has role 'ADMIN' user: " + id);
                 //check stats invalid
                 switch(status.toLowerCase()) {
                     case "locked":
@@ -91,7 +91,7 @@ public class UserServiceImpl implements UserService{
 
     public User updateUserRole(int id, List<String> roles) {
         if(roles.size() == 0)
-            throw new RuntimeExceptionHandle("Error: roles can't be empty");
+            throw new RuntimeExceptionHandle("roles can't be empty");
         //lowcase list role
         List<String> newRoles = roles.stream()
                              .map(String::toLowerCase)
@@ -101,26 +101,26 @@ public class UserServiceImpl implements UserService{
             .map(user -> {
                 //Check if user have role ADMIN
                 Role roleAdmin = roleService.findByName(RoleName.ROLE_ADMIN)
-                    .orElseThrow(() -> new RuntimeExceptionHandle("Error: Role is not found."));
+                    .orElseThrow(() -> new RuntimeExceptionHandle("Role is not found."));
                 if(user.getRoles().contains(roleAdmin) && !newRoles.contains("admin"))
-                    throw new RuntimeExceptionHandle("Error: Could not remove role 'ADMIN' for user has role 'ADMIN' user: " + id);
+                    throw new RuntimeExceptionHandle("Could not remove role 'ADMIN' for user has role 'ADMIN' user: " + id);
 
                 Set<Role> userRoles = new HashSet<>();
                 newRoles.forEach(role -> {
                     switch (role.toLowerCase()) {
                         case "admin":
                             Role adminRole = roleService.findByName(RoleName.ROLE_ADMIN)
-                                .orElseThrow(() -> new RuntimeExceptionHandle("Error: Role is not found."));
+                                .orElseThrow(() -> new RuntimeExceptionHandle("Role is not found."));
                                 userRoles.add(adminRole);
                             break;
                         case "store":
                             Role storeRole = roleService.findByName(RoleName.ROLE_STORE)
-                                .orElseThrow(() -> new RuntimeExceptionHandle("Error: Role is not found."));
+                                .orElseThrow(() -> new RuntimeExceptionHandle("Role is not found."));
                                 userRoles.add(storeRole);
                             break;
                         default:
                             Role userRole = roleService.findByName(RoleName.ROLE_CUSTOMER)
-                                .orElseThrow(() -> new RuntimeExceptionHandle("Error: Role is not found."));
+                                .orElseThrow(() -> new RuntimeExceptionHandle("Role is not found."));
                                 userRoles.add(userRole);
                     }
                 });

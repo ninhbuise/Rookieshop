@@ -45,12 +45,12 @@ public class CustomerServiceImpl implements CustomerService{
     @Override
     public Customer updateCustomer(Customer newCustomer, int id) {
         return customerRepository.findById(id)
-            .map(customer ->{
+            .map(customer -> {
                 customer.setFirst_name(newCustomer.getFirst_name());
                 customer.setLast_name(newCustomer.getLast_name());
                 return customerRepository.save(customer);
             })
-            .orElseGet(() ->{
+            .orElseGet(() -> {
                 return customerRepository.save(newCustomer);
             }
         );

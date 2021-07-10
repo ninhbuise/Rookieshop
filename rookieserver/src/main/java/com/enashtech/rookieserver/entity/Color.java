@@ -15,14 +15,14 @@ import lombok.Data;
 @Entity
 @Data
 @Table(name = "color")
-public class Color implements Serializable{
+public class Color implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
     @NotBlank
-    @Size(min=3, max = 30)
+    @Size(min = 3, max = 30)
     private String color_name;
     @NotBlank
-    @Size(min=7, max = 7)
+    @Size(min = 7, max = 7)
     private String hex_code;
 }

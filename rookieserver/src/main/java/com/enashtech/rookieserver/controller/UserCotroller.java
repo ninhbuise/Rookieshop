@@ -6,7 +6,6 @@ import com.enashtech.rookieserver.entity.User;
 import com.enashtech.rookieserver.service.UserService;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -21,11 +20,11 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/api/v1")
-public class UserRestCotroller {
+public class UserCotroller {
     private final UserService userService;
 
     @Autowired
-    public UserRestCotroller(UserService userService) {
+    public UserCotroller(UserService userService) {
         this.userService = userService;
     }
 

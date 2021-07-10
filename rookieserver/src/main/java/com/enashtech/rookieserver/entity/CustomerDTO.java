@@ -22,8 +22,10 @@ public class CustomerDTO {
     @Size(min=3, max = 30)
     private String last_name;
     //this matches either empty string or 9-11 digits number.
+    @NotBlank
     @Pattern(regexp="(^$|[0-9]{9,11})")
     private String phone;
+    @NotBlank
     @Email
     private String email;
     

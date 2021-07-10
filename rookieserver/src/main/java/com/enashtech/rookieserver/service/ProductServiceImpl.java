@@ -47,7 +47,7 @@ public class ProductServiceImpl implements ProductService{
     @Override
     public Product updateProduct(Product newProduct, int id) {
         return productRepository.findById(id)
-            .map(product ->{
+            .map(product -> {
                 product.setName(newProduct.getName());
                 product.setPrice(newProduct.getPrice());
                 product.setQuantity(newProduct.getQuantity());
@@ -57,7 +57,7 @@ public class ProductServiceImpl implements ProductService{
                 product.setProductDetail(newProduct.getProductDetail());
                 return productRepository.save(product);
             })
-            .orElseGet(()->{
+            .orElseGet(()-> {
                 newProduct.setId(id);
                 return productRepository.save(newProduct);
             });

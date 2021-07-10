@@ -26,7 +26,7 @@ import lombok.ToString;
 @Entity
 @Data
 @Table(name = "product")
-public class Product implements Serializable{
+public class Product implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
@@ -63,9 +63,7 @@ public class Product implements Serializable{
     @ToString.Exclude
     private Store store;
 
-    @OneToOne(fetch = FetchType.LAZY,
-        cascade =  CascadeType.ALL,
-        mappedBy = "product")
+    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "product")
     @PrimaryKeyJoinColumn
     @EqualsAndHashCode.Exclude
     @ToString.Exclude

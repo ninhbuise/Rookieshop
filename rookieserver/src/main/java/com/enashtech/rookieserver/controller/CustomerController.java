@@ -2,6 +2,8 @@ package com.enashtech.rookieserver.controller;
 
 import java.util.List;
 
+import javax.validation.Valid;
+
 import com.enashtech.rookieserver.entity.Customer;
 import com.enashtech.rookieserver.service.CustomerService;
 
@@ -20,6 +22,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api/v1/")
 public class CustomerController {
     private CustomerService customerService;
+
     @Autowired
     public CustomerController(CustomerService customerService) {
         this.customerService = customerService;
@@ -36,12 +39,12 @@ public class CustomerController {
     }
 
     @PostMapping("/customer")
-    Customer saveCustomer(@RequestBody Customer newCustomer) {
+    Customer saveCustomer(@Valid @RequestBody Customer newCustomer) {
         return customerService.saveCustomer(newCustomer);
     }
 
     @PutMapping("/customer/{id}")
-    Customer updatCustomer(@RequestBody Customer newCustomer, @PathVariable int id) {
+    Customer updatCustomer(@Valid @RequestBody Customer newCustomer, @PathVariable int id) {
         return customerService.updateCustomer(newCustomer, id);
     }
 }

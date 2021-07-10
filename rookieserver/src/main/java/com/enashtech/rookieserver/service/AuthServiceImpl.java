@@ -102,7 +102,7 @@ public class AuthServiceImpl implements AuthService{
 
         Set<Role> roles = new HashSet<>();
         Role userRole = roleService.findByName(RoleName.ROLE_CUSTOMER)
-            .orElseThrow(() -> new RuntimeExceptionHandle("Error: Role is not found."));
+            .orElseThrow(() -> new RuntimeExceptionHandle("Role is not found."));
         roles.add(userRole);
         user.setRoles(roles);
         userService.saveUser(user);
@@ -122,7 +122,7 @@ public class AuthServiceImpl implements AuthService{
 
         Set<Role> roles = new HashSet<>();
         Role adminRole = roleService.findByName(RoleName.ROLE_ADMIN)
-            .orElseThrow(() -> new RuntimeExceptionHandle("Error: Role is not found."));
+            .orElseThrow(() -> new RuntimeExceptionHandle("Role is not found."));
         roles.add(adminRole);
         admin.setRoles(roles);
         userService.saveUser(admin);

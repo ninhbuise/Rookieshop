@@ -8,6 +8,7 @@ import com.enashtech.rookieserver.security.services.UserDetailsServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
@@ -69,8 +70,11 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
             .exceptionHandling().authenticationEntryPoint(unauthorizedHandler).and()
             .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
             .authorizeRequests()
-            .antMatchers("/api/v1/user/").hasAnyRole("CUSTOMER", "STORE", "ADMIN")
-            .antMatchers("/api/v1/users/").hasAuthority("ROLE_ADMIN")
+            .antMatchers("/api/v1/user").hasAnyRole("CUSTOMER", "STORE", "ADMIN")
+            .antMatchers("/api/rookieshop/order").hasRole("CUSTOMER") 
+            .antMatchers("/api/v1/shop/**").hasRole("STORE")
+            .antMatchers("/api/v1/users").hasRole("ADMIN")
+            .antMatchers(HttpMethod.GET, "/api/v1/orders").hasRole("ADMIN")
             .antMatchers("/api/auth/**").permitAll()
             .antMatchers("/api/rookieshop/**").permitAll()
             .anyRequest().authenticated();

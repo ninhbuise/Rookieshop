@@ -22,7 +22,7 @@ public class AuthController {
     private final AuthService authService;
 
     @Autowired
-    public AuthController (AuthService authService) {
+    public AuthController(AuthService authService) {
         this.authService = authService;
     }
 
@@ -30,14 +30,14 @@ public class AuthController {
     public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginRequest loginRequest) {
         return authService.authenticateUser(loginRequest);
     }
-    
+
     @PostMapping("/signup")
     public ResponseEntity<?> registerUser(@Valid @RequestBody CustomerDTO customerDTO) {
         return authService.register(customerDTO);
     }
 
     @PostMapping("/admin")
-    ResponseEntity<?> saveAdmin(@RequestBody AdminDTO adminDTO) {
+    ResponseEntity<?> saveAdmin(@Valid @RequestBody AdminDTO adminDTO) {
         return authService.saveAdmin(adminDTO);
     }
 }

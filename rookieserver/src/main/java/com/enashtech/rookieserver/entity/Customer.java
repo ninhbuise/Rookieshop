@@ -10,6 +10,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
@@ -57,10 +58,10 @@ public class Customer implements Serializable{
     private String email;
     private Date birth_day;
     
-    @OneToMany
+    @ManyToOne
     @EqualsAndHashCode.Exclude
     @ToString.Exclude
-    private List<Address> addresses;
+    private Address address;
 
     @OneToMany
     @JoinColumn(name = "customer_id", referencedColumnName = "id")
