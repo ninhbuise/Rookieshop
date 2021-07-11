@@ -7,6 +7,6 @@ import com.enashtech.rookieserver.entity.Role;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface RoleRepository extends JpaRepository<Role, Integer>{
+public interface RoleRepository extends JpaRepository<Role, Integer> {
     Optional<Role> findByName(RoleName roleName);
 }

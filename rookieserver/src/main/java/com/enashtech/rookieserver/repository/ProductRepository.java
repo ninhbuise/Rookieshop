@@ -11,7 +11,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.transaction.annotation.Transactional;
 
-public interface ProductRepository extends JpaRepository<Product, Integer>{
+public interface ProductRepository extends JpaRepository<Product, Integer> {
     @Transactional
     @Query("select p from Product p "
             + "join Store s on s  = p.store "

@@ -4,7 +4,7 @@ import java.util.List;
 
 import javax.validation.Valid;
 
-import com.enashtech.rookieserver.entity.Customer;
+import com.enashtech.rookieserver.entity.*;
 import com.enashtech.rookieserver.service.CustomerService;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,5 +46,10 @@ public class CustomerController {
     @PutMapping("/customer/{id}")
     Customer updatCustomer(@Valid @RequestBody Customer newCustomer, @PathVariable int id) {
         return customerService.updateCustomer(newCustomer, id);
+    }
+
+    @PostMapping("/valid")
+    OrderDetail check(@Valid @RequestBody OrderDetail test) {
+        return test;
     }
 }

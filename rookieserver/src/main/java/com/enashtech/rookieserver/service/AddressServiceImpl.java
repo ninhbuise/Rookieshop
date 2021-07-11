@@ -15,7 +15,6 @@ public class AddressServiceImpl implements AddressService {
         this.addressRepository = addressRepository;
     }
 
-
     @Override
     public Address saveAddress(Address newAddress) {
         return addressRepository.save(newAddress);
@@ -24,14 +23,14 @@ public class AddressServiceImpl implements AddressService {
     @Override
     public Address updateAddress(Address newAddress, int id) {
         return addressRepository.findById(id)
-            .map(address ->{
+            .map(address -> {
                 address.setCity(newAddress.getCity());
                 address.setDistrict(newAddress.getDistrict());
                 address.setWard(newAddress.getWard());
                 address.setStreet(newAddress.getStreet());
                 return addressRepository.save(address);
             })
-            .orElseGet(() ->{
+            .orElseGet(() -> {
                 return addressRepository.save(newAddress);
             }
         );

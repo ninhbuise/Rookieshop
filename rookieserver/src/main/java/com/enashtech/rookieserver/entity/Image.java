@@ -11,16 +11,19 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 
 import lombok.Data;
+
 @Entity
 @Data
 @Table(name = "image")
-public class Image implements Serializable{
+public class Image implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
+
     @NotBlank
-    @Size(min=3, max = 90)
+    @Size(min = 3, max = 90, message = "alt should be in range 3-90")
     private String alt;
-    @Size(min=3, max = 90)
+
+    @Size(min = 3, max = 90, message = "alt should be in range 3-90")
     private String url;
 }

@@ -7,7 +7,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.transaction.annotation.Transactional;
 
-public interface CustomerRepository extends JpaRepository<Customer, Integer>{
+public interface CustomerRepository extends JpaRepository<Customer, Integer> {
     @Transactional
     @Query("select c from Customer c "
             + "join User u on u = c.user "

@@ -16,6 +16,9 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.PrePersist;
 import javax.persistence.Table;
+import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.PastOrPresent;
 import javax.validation.constraints.Pattern;
 
 import lombok.Data;
@@ -25,16 +28,19 @@ import lombok.ToString;
 @Entity
 @Data
 @Table(name = "orders")
-public class Order implements Serializable{
+public class Order implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
-    private Date created;    
     
-    //this matches either empty string or 9-11 digits number.
-    @Pattern(regexp="(^$|[0-9]{9,11})")
+    @PastOrPresent
+    private Date created;
+
+    @Pattern(regexp = "(^$|[0-9]{9,11})", message = "Phone mush match 9-11 digits number")
     private String phone;
-    
+
+    @Valid
+    @NotNull
     @ManyToOne
     @EqualsAndHashCode.Exclude
     @ToString.Exclude
@@ -44,6 +50,8 @@ public class Order implements Serializable{
     @Column(length = 60)
     private Status status;
 
+    @Valid
+    @NotNull
     @OneToMany
     @JoinColumn(name = "orders_id", referencedColumnName = "id")
     @EqualsAndHashCode.Exclude

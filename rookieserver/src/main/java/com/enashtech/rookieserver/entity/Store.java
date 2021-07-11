@@ -9,6 +9,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 import lombok.Data;
@@ -18,14 +19,15 @@ import lombok.ToString;
 @Entity
 @Data
 @Table(name = "store")
-public class Store implements Serializable{
+public class Store implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
     @NotBlank
-    @Size(min=3, max = 30)
+    @Size(min = 3, max = 30)
     private String name;
-    
+
+    @NotNull
     @ManyToOne
     @JoinColumn(name = "owner", nullable = false)
     @EqualsAndHashCode.Exclude

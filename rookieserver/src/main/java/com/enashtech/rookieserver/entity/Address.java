@@ -22,16 +22,20 @@ public class Address implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
-    @NotBlank
+
+    @NotBlank(message = "City should not be null or blank")
     @Size(min = 3, max = 50)
     private String city;
-    @NotBlank
+
+    @NotBlank(message = "District should not be null or blank")
     @Size(min = 3, max = 50)
     private String district;
-    @NotBlank
+
+    @NotBlank(message = "Ward should not be null or blank")
     @Size(min = 3, max = 50)
     private String ward;
-    @NotBlank
+
+    @NotBlank(message = "Street should not be null or blank")
     @Size(min = 3, max = 50)
     private String street;
 

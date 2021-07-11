@@ -7,11 +7,12 @@ import lombok.Data;
 
 @Data
 public class AdminDTO {
-    @NotBlank
-    @Size(min = 3, max = 20)
+    @NotBlank(message = "Username should not be null or blank")
+    @Size(min = 3, max = 20, message = "Username should be in range 3-20")
     String username;
-    @NotBlank
-    @Size(min = 6, max = 40)
+
+    @NotBlank(message = "Password should not be null or blank")
+    @Size(min = 6, max = 40, message = "Username should be in range 3-20")
     String password;
 
     public AdminDTO(User user) {

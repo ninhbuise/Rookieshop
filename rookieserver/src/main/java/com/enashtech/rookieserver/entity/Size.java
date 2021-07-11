@@ -16,10 +16,11 @@ import lombok.Data;
 @Entity
 @Data
 @Table(name = "sizes")
-public class Size implements Serializable{
+public class Size implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
+
     @NotBlank
     @Length(min = 3, max = 30)
     private String size_name;

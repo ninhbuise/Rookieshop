@@ -4,6 +4,6 @@ import com.enashtech.rookieserver.entity.ProductType;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface ProductTypeRepository extends JpaRepository<ProductType, Integer>{
+public interface ProductTypeRepository extends JpaRepository<ProductType, Integer> {
     
 }

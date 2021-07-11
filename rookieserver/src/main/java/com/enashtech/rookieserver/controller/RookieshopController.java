@@ -2,10 +2,11 @@ package com.enashtech.rookieserver.controller;
 
 import java.util.List;
 
+import javax.validation.Valid;
+
 import com.enashtech.rookieserver.entity.Order;
 import com.enashtech.rookieserver.entity.OrderDTO;
 import com.enashtech.rookieserver.entity.Product;
-import com.enashtech.rookieserver.entity.ProductDTO;
 import com.enashtech.rookieserver.service.OrderService;
 import com.enashtech.rookieserver.service.ProductService;
 
@@ -39,7 +40,7 @@ public class RookieshopController {
 
     @PostMapping("/order")
     @ResponseBody
-    public Order saveOrder(@RequestBody OrderDTO orderDTO, Authentication authentication) {
+    public Order saveOrder(@Valid @RequestBody OrderDTO orderDTO, Authentication authentication) {
         return orderService.saveOrder(orderDTO, authentication.getName());
     }
 }

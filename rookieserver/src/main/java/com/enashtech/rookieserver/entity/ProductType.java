@@ -15,11 +15,12 @@ import lombok.Data;
 @Entity
 @Data
 @Table(name = "product_type")
-public class ProductType implements Serializable{
+public class ProductType implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
+
     @NotBlank
-    @Size(min=3, max = 30)
+    @Size(min = 3, max = 30)
     private String product_type;
 }

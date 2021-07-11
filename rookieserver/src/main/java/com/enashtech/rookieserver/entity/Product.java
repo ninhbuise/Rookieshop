@@ -17,7 +17,11 @@ import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Table;
-import javax.validation.constraints.Pattern;
+import javax.validation.Valid;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Positive;
+import javax.validation.constraints.PositiveOrZero;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -30,45 +34,63 @@ public class Product implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
+
+    @NotBlank
     private String name;
 
+    @Valid
     @ManyToOne
     @JoinColumn(name = "product_type", nullable = false)
     @EqualsAndHashCode.Exclude
     @ToString.Exclude
     private ProductType productType;
-    // @Pattern(regexp="(^([0-9]*[1-9][0-9]*(\\.[0-9]+)?|[0]+\\.[0-9]*[1-9][0-9]*)$)")
+
+    @NotNull
+    @Positive
     private double price;
-    // @Pattern(regexp="(^[0-9]\\d*$)")
+
+    @NotNull
+    @PositiveOrZero
     private int quantity;
 
+    @Valid
+    @NotNull
     @ManyToMany
     @EqualsAndHashCode.Exclude
     @ToString.Exclude
     private Set<Size> sizes;
 
+    @Valid
+    @NotNull
     @ManyToMany
     @EqualsAndHashCode.Exclude
     @ToString.Exclude
     private Set<Color> colors;
 
+    @Valid
+    @NotNull
     @ManyToMany
     @EqualsAndHashCode.Exclude
     @ToString.Exclude
     private List<Image> images;
 
+    @Valid
+    @NotNull
     @ManyToOne
     @JoinColumn(name = "store_id", nullable = false)
     @EqualsAndHashCode.Exclude
     @ToString.Exclude
     private Store store;
 
+    @Valid
+    @NotNull
     @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "product")
     @PrimaryKeyJoinColumn
     @EqualsAndHashCode.Exclude
     @ToString.Exclude
     private ProductDetail productDetail;
 
+    @Valid
     @OneToMany(mappedBy = "product", fetch = FetchType.EAGER)
     @EqualsAndHashCode.Exclude
     @ToString.Exclude

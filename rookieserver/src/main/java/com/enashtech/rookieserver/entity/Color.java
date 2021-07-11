@@ -19,10 +19,12 @@ public class Color implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
-    @NotBlank
-    @Size(min = 3, max = 30)
+
+    @NotBlank(message = "Color's name should not be null or blank")
+    @Size(min = 3, max = 30, message = "Color's name should be in range 3-30")
     private String color_name;
-    @NotBlank
-    @Size(min = 7, max = 7)
+
+    @NotBlank(message = "Hex code of color should not be null or blank")
+    @Size(min = 7, max = 7, message = "Hex code of color should be in range 7-7")
     private String hex_code;
 }
