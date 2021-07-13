@@ -44,6 +44,7 @@ public class AuthServiceImpl implements AuthService{
         this. encoder = encoder;
         this.authenticationManager = authenticationManager;
         this.jwtUtils = jwtUtils;
+
     }
 
     @Override
@@ -128,4 +129,5 @@ public class AuthServiceImpl implements AuthService{
         userService.saveUser(admin);
         return ResponseEntity.ok(new MessageResponse("Add new user successfully!"));
     }
+
 }

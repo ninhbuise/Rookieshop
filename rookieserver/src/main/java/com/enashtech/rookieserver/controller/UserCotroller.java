@@ -2,6 +2,8 @@ package com.enashtech.rookieserver.controller;
 
 import java.util.List;
 
+import javax.validation.Valid;
+
 import com.enashtech.rookieserver.entity.User;
 import com.enashtech.rookieserver.service.UserService;
 
@@ -27,18 +29,17 @@ public class UserCotroller {
         this.userService = userService;
     }
 
-    @PutMapping("/user/{id}")
-    User updateUser(@RequestBody User newUser, @PathVariable int id) {
-        return userService.updateUser(newUser, id);
+    @PutMapping("/users/{id}")
+    User updateUser(@Valid @RequestBody User newUser) {
+        return userService.updateUser(newUser);
     }
 
     @GetMapping("/users")
-    // @PreAuthorize("hasRole('ADMIN')")
     List<User> getUsers() {
         return userService.getUsers();
     }
 
-    @GetMapping("/user/{id}")
+    @GetMapping("/users/{id}")
     User getUserById(@PathVariable int id) {
         return userService.getUserById(id);
     }
@@ -49,12 +50,12 @@ public class UserCotroller {
         return userService.getUserByUsername(authentication.getName());
     }
 
-    @PostMapping("/user-status/{id}")
+    @PostMapping("/users/status/{id}")
     User updateUserStatus(@PathVariable int id, @RequestParam String status) {
         return userService.updateUserStatus(id, status);
     }
 
-    @PostMapping("/user-role/{id}")
+    @PostMapping("/users/roles/{id}")
     User updateUserRole(@PathVariable int id, @RequestParam List<String> roles) {
         return userService.updateUserRole(id, roles);
     }

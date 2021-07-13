@@ -50,18 +50,15 @@ public class UserServiceImpl implements UserService{
     }
 
     @Override
-    public User updateUser(User newUser, int id) {
+    public User updateUser(User newUser) {
+        int id = newUser.getId();
         return userRepository.findById(id)
             .map(user -> {
                 user.setPassword(newUser.getPassword());
                 user.setAvatar(newUser.getAvatar());
                 return userRepository.save(user);
             })
-            .orElseGet(() -> {
-                newUser.setId(id);
-                return userRepository.save(newUser);
-            }
-        );
+            .orElseThrow(() -> new NotFoundExecptionHandle("Could not found user: " + id));
     }
 
     @Override
@@ -91,7 +88,7 @@ public class UserServiceImpl implements UserService{
 
     public User updateUserRole(int id, List<String> roles) {
         if(roles.size() == 0)
-            throw new RuntimeExceptionHandle("roles can't be empty");
+            throw new RuntimeExceptionHandle("Roles can't be empty");
         //lowcase list role
         List<String> newRoles = roles.stream()
                              .map(String::toLowerCase)
@@ -129,7 +126,6 @@ public class UserServiceImpl implements UserService{
             })
             .orElseThrow(() -> new NotFoundExecptionHandle("Could not found user: " + id));
     }
-
 
     @Override
     public void deleteUser(int id) {
