@@ -94,6 +94,12 @@ public class Customer implements Serializable {
         this.address = customerDTO.getAddress();
     }
 
+    public Customer(int id, String first_name, String last_name) {
+        this.id = id;
+        this.first_name = first_name;
+        this.last_name = last_name;
+    }
+
     public Customer() {
     }
 

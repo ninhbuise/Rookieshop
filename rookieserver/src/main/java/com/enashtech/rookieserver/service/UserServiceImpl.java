@@ -72,11 +72,11 @@ public class UserServiceImpl implements UserService{
                     throw new RuntimeExceptionHandle("Could not change role for user has role 'ADMIN' user: " + id);
                 //check stats invalid
                 switch(status.toLowerCase()) {
-                    case "locked":
-                        user.setStatus(Status.LOCKED);
+                    case "active":
+                        user.setStatus(Status.ACTIVE);
                     break;
-                    case "open":
-                        user.setStatus(Status.OPEN);
+                    case "banned":
+                        user.setStatus(Status.BANNED);
                     break;
                     default:
                         throw new NotFoundExecptionHandle("Could not found status: " + status);

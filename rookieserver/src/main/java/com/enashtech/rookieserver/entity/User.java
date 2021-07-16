@@ -58,10 +58,10 @@ public class User implements Serializable {
     public User(String username, String password) {
         this.username = username;
         this.password = password;
-        this.status = Status.OPEN;
+        this.status = Status.ACTIVE;
     }
 
     public User() {
-        this.status = Status.OPEN;
+        this.status = Status.ACTIVE;
     }
 }

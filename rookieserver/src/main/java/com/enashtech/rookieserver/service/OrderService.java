@@ -6,6 +6,6 @@ import com.enashtech.rookieserver.entity.Order;
 import com.enashtech.rookieserver.entity.OrderDTO;
 
 public interface OrderService {
-    List<Order> geOrderList();
+    List<Order> getOrderList();
     Order saveOrder(OrderDTO orderDTO, String customer);
 }

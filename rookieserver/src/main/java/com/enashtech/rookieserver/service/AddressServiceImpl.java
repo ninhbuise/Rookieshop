@@ -1,6 +1,9 @@
 package com.enashtech.rookieserver.service;
 
+import java.util.List;
+
 import com.enashtech.rookieserver.entity.Address;
+import com.enashtech.rookieserver.handleException.NotFoundExecptionHandle;
 import com.enashtech.rookieserver.repository.AddressRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,7 +24,8 @@ public class AddressServiceImpl implements AddressService {
     }
 
     @Override
-    public Address updateAddress(Address newAddress, int id) {
+    public Address updateAddress(Address newAddress) throws NotFoundExecptionHandle {
+        int id = newAddress.getId();
         return addressRepository.findById(id)
             .map(address -> {
                 address.setCity(newAddress.getCity());
@@ -30,10 +34,23 @@ public class AddressServiceImpl implements AddressService {
                 address.setStreet(newAddress.getStreet());
                 return addressRepository.save(address);
             })
-            .orElseGet(() -> {
-                return addressRepository.save(newAddress);
-            }
-        );
+            .orElseThrow(() -> new NotFoundExecptionHandle("Could not found address: " + id));
+    }
+
+    @Override
+    public List<Address> getAllAddresses() {
+        return addressRepository.findAll();
+    }
+
+    @Override
+    public Address getAddressById(int id) {
+        return addressRepository.findById(id)
+            .orElseThrow(() -> new NotFoundExecptionHandle("Could not found address: " + id));
+    }
+
+    @Override
+    public void deleteAddressById(int id) {
+        addressRepository.deleteById(id);
     }
     
 }

@@ -33,7 +33,7 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public List<Order> geOrderList() {
+    public List<Order> getOrderList() {
         return orderRepository.findAll();
     }
 
@@ -85,7 +85,7 @@ public class OrderServiceImpl implements OrderService {
         });
         orderRepository.save(order);
         customer.addOrder(order);
-        customerService.updateCustomer(customer, customer.getId());
+        customerService.updateCustomer(customer);
         return order;
     }
 

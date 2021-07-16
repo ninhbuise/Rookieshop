@@ -42,6 +42,14 @@ public class Address implements Serializable {
     public Address() {
     }
 
+    public Address(int id,  String city, String district, String ward, String street) {
+        this.id = id;
+        this.city = city;
+        this.district = district;
+        this.ward = ward;
+        this.street = street;
+    }
+
     @Override
     public int hashCode() {
         int hash = 7;

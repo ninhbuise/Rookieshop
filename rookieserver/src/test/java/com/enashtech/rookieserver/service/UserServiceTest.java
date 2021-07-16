@@ -2,6 +2,7 @@ package com.enashtech.rookieserver.service;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -21,6 +22,7 @@ import com.enashtech.rookieserver.handleException.RuntimeExceptionHandle;
 import com.enashtech.rookieserver.repository.RoleRepository;
 import com.enashtech.rookieserver.repository.UserRepository;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -35,100 +37,68 @@ public class UserServiceTest {
     RoleRepository roleRepo;
 
     @Autowired
-    UserService userService;
-    
-    @Test
-    public void getUsers() {
-        //Give
-        List<User> list = new ArrayList<>();
+    UserService service;
+
+    List<User> list;
+
+    @BeforeEach
+    public void setUp() {
+        this.list = new ArrayList<>();
         User user1 = new User("admin", "123456");
         User user2 = new User("ABC", "zxc");
         User user3 = new User("Rookies", "password");
 
-        list.add(user1);
-        list.add(user2);
-        list.add(user3);
-
+        list.add(0, user1);
+        list.add(1, user2);
+        list.add(2, user3);
+    }
+    
+    @Test
+    public void getUsers_ReturnUserList() {
         when(userRepo.findAll()).thenReturn(list);
-
-        //When
-        List<User> userList = userService.getUsers();
-
-        //Then
+        List<User> userList = service.getUsers();
         assertEquals(3, userList.size());
         verify(userRepo, times(1)).findAll();
     }
 
     @Test
-    public void getUserById() {
-        //Give
-        User user = new User();
-        user.setId(1);
-		user.setUsername("ABC");
-		user.setPassword("password");
-
-		when(userRepo.save(user)).thenReturn(user);
-
-        when(userRepo.findById(1)).thenReturn(Optional.of(user));
-
-        //when
-        User userABC = userService.getUserById(1);
-
-        //then
+    public void getUserById_RetuenUser() {
+        when(userRepo.findById(3)).thenReturn(Optional.of(list.get(2)));
+        User userABC = service.getUserById(3);
         assertEquals("password", userABC.getPassword());
     }
 
     @Test
-    public void getUserById_notFound() throws NotFoundExecptionHandle {
-     
+    public void getUserById_ThrowNotFoundExecption() throws NotFoundExecptionHandle {
         Exception exception = assertThrows(NotFoundExecptionHandle.class, () -> {
-            userService.getUserById(1);
+            service.getUserById(1);
         });
-        
         assertEquals("Could not found user: 1", exception.getMessage());
     }
 
     @Test
-    public void getUserByUsername() {
-        //Give
-        User user = new User();
-        user.setId(1);
-        user.setUsername("ABC");
-        user.setPassword("password");
-        userRepo.save(user);
-
-        when(userRepo.findByUsername("ABC")).thenReturn(Optional.of(user));
-
-        //when
-        User userABC = userService.getUserByUsername("ABC");
-
-        //then
-        assertEquals("password", userABC.getPassword());
+    public void getUserByUsername_ReturnUser() {
+        when(userRepo.findByUsername("ABC")).thenReturn(Optional.of(list.get(1)));
+        User userABC = service.getUserByUsername("ABC");
+        assertEquals("zxc", userABC.getPassword());
     }
 
     @Test
-    public void getUserByUsername_NotFlound() {
+    public void getUserByUsername_ThrowNotFoundExecption() {
         Exception exception = assertThrows(NotFoundExecptionHandle.class, () -> {
-            userService.getUserByUsername("ABC");
+            service.getUserByUsername("ABC");
         });
-        
         assertEquals("Could not found user: ABC", exception.getMessage());
     }
 
     @Test
-    public void saveUser() {
-        User user = new User();
-        user.setId(1);
-        user.setUsername("ABC");
-        user.setPassword("password");
-
-        when(userRepo.save(user)).thenReturn(user);
-
-        assertEquals(userService.saveUser(user), user);
+    public void saveUser_ReturnUser() {
+        when(userRepo.save(list.get(0))).thenReturn(list.get(0));
+        assertEquals(service.saveUser(list.get(0)), list.get(0));
     }
 
     @Test
-    public void updateUser() {
+    public void updateUser_ReturnUser() {
         User user = new User();
         user.setId(1);
         user.setUsername("ABC");
@@ -138,14 +108,14 @@ public class UserServiceTest {
         when(userRepo.findById(1)).thenReturn(Optional.of(user));
 
         user.setPassword("D@nim");
-        userService.updateUser(user);
+        service.updateUser(user);
 
-        User userABC = userService.getUserById(1);
+        User userABC = service.getUserById(1);
         assertEquals("D@nim", userABC.getPassword());
     }
 
     @Test
-    public void updateUser_NotFound() {
+    public void updateUser_ThrowNotFoundExecption() {
         User user = new User();
         user.setId(1);
         user.setUsername("ABC");
@@ -156,14 +126,14 @@ public class UserServiceTest {
         user.setUsername("Rzayu");
 
         Exception exception = assertThrows(NotFoundExecptionHandle.class, () -> {
-            userService.updateUser(user);
+            service.updateUser(user);
         });
         
         assertEquals("Could not found user: 2", exception.getMessage());
     }
 
     @Test
-    public void updateUserStatus() {
+    public void updateUserStatus_ReturnUser() {
         User user = new User();
         user.setId(1);
         user.setUsername("ABC");
@@ -176,14 +146,14 @@ public class UserServiceTest {
         when(userRepo.findById(1)).thenReturn(Optional.of(user));
         when(roleRepo.findByName(RoleName.ROLE_ADMIN)).thenReturn(Optional.of(role));
 
-        userService.updateUserStatus(1, "locked");
-        User userABC = userService.getUserById(1);
+        service.updateUserStatus(1, "banned");
+        User userABC = service.getUserById(1);
 
-        assertEquals(Status.LOCKED, userABC.getStatus());
+        assertEquals(Status.BANNED, userABC.getStatus());
     }
 
     @Test
-    public void updateUserStatus_RoleAdmin() throws RuntimeExceptionHandle {
+    public void updateUserStatus_HasRoleAdmin_ThrowRuntimeExceptioon() throws RuntimeExceptionHandle {
         User user = new User();
         user.setId(1);
         user.setUsername("ABC");
@@ -200,14 +170,14 @@ public class UserServiceTest {
         when(roleRepo.findByName(RoleName.ROLE_ADMIN)).thenReturn(Optional.of(role));
 
         Exception exception = assertThrows(RuntimeExceptionHandle.class, () -> {
-            userService.updateUserStatus(1, "locked");
+            service.updateUserStatus(1, "locked");
         });
 
         assertEquals("Could not change role for user has role 'ADMIN' user: 1", exception.getMessage());
     }
 
     @Test
-    public void updateUserStatus_StatusNotFound() throws NotFoundExecptionHandle {
+    public void updateUserStatus_StatusNotFound_ThorwsNotFoundExecption() throws NotFoundExecptionHandle {
         User user = new User();
         user.setId(1);
         user.setUsername("ABC");
@@ -221,14 +191,14 @@ public class UserServiceTest {
         when(roleRepo.findByName(RoleName.ROLE_ADMIN)).thenReturn(Optional.of(role));
 
         Exception exception = assertThrows(NotFoundExecptionHandle.class, () -> {
-            userService.updateUserStatus(1, "closed");
+            service.updateUserStatus(1, "closed");
         });
 
         assertEquals("Could not found status: closed", exception.getMessage());
     }
 
     @Test
-    public void updateUserRole() {
+    public void updateUserRole_ReturnUser() {
         User user = new User();
         user.setId(1);
         user.setUsername("ABC");
@@ -250,15 +220,15 @@ public class UserServiceTest {
         newRoles.add("store");
         newRoles.add("admin");
 
-        userService.updateUserRole(1, newRoles);
+        service.updateUserRole(1, newRoles);
 
-        User newUser = userService.getUserById(1);
+        User newUser = service.getUserById(1);
 
         assertEquals(newUser.getRoles().contains(new Role(RoleName.ROLE_STORE)), true);
     }
 
     @Test
-    public void updateUserRole_ListRoleIsEmpty() throws RuntimeExceptionHandle {
+    public void updateUserRole_ListRoleIsEmpty_ThrowsRuntimeException() throws RuntimeExceptionHandle {
         User user = new User();
         user.setId(1);
         user.setUsername("ABC");
@@ -278,14 +248,14 @@ public class UserServiceTest {
 
         List<String> newRoles = new ArrayList<>();
         Exception exception = assertThrows(RuntimeExceptionHandle.class, () -> {
-            userService.updateUserRole(1, newRoles);
+            service.updateUserRole(1, newRoles);
         });
 
         assertEquals("Roles can't be empty", exception.getMessage());
     }
 
     @Test
-    public void updateUserRole_RoleNotFound() throws RuntimeExceptionHandle {
+    public void updateUserRole_RoleNotFound_ThrowsRuntimeException() throws RuntimeExceptionHandle {
         User user = new User();
         user.setId(1);
         user.setUsername("ABC");
@@ -304,14 +274,14 @@ public class UserServiceTest {
         newRoles.add("store");
         newRoles.add("admin");
         Exception exception = assertThrows(RuntimeExceptionHandle.class, () -> {
-            userService.updateUserRole(1, newRoles);
+            service.updateUserRole(1, newRoles);
         });
 
         assertEquals("Role is not found.", exception.getMessage());
     }
 
     @Test
-    public void updateUserRole_UserNotFound() throws NotFoundExecptionHandle {
+    public void updateUserRole_UserNotFound_ThrowsNotFoundExecption() throws NotFoundExecptionHandle {
         User user = new User();
         user.setId(1);
         user.setUsername("ABC");
@@ -333,21 +303,27 @@ public class UserServiceTest {
         newRoles.add("store");
         newRoles.add("admin");
         Exception exception = assertThrows(NotFoundExecptionHandle.class, () -> {
-            userService.updateUserRole(2, newRoles);
+            service.updateUserRole(2, newRoles);
         });
 
         assertEquals("Could not found user: 2", exception.getMessage());
     }
 
     @Test
-    public void existsByUsername() {
-        User user = new User();
-        user.setId(1);
-        user.setUsername("ABC");
-        user.setPassword("password");
-
+    public void existsByUsername_ReturnTrue() {
         when(userRepo.existsByUsername("ABC")).thenReturn(true);
+        assertEquals(service.existsByUsername("ABC"), true);
+    }
 
-        assertEquals(userService.existsByUsername("ABC"), true);
+    @Test
+    public void existsByUsername_ReturnFalse() {
+        when(userRepo.existsByUsername("ABC")).thenReturn(false);
+        assertEquals(service.existsByUsername("ABC"), false);
+    }
+
+    @Test
+    public void deleteUser() {
+        service.deleteUser(1);
+        verify(userRepo).deleteById(any());
     }
 }

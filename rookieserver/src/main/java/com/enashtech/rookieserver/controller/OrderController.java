@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api/v1")
 public class OrderController {
     private final OrderService orderService;
-
     @Autowired
     public OrderController(OrderService orderService) {
         this.orderService = orderService;
@@ -24,6 +23,6 @@ public class OrderController {
 
     @GetMapping("orders")
     public List<Order> getOrderList() {
-        return orderService.geOrderList();
+        return orderService.getOrderList();
     }
 }

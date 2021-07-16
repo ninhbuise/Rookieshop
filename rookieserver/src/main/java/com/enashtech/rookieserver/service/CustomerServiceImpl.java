@@ -43,17 +43,17 @@ public class CustomerServiceImpl implements CustomerService{
     }
 
     @Override
-    public Customer updateCustomer(Customer newCustomer, int id) {
+    public Customer updateCustomer(Customer newCustomer) {
+        int id = newCustomer.getId();
         return customerRepository.findById(id)
             .map(customer -> {
                 customer.setFirst_name(newCustomer.getFirst_name());
                 customer.setLast_name(newCustomer.getLast_name());
+                customer.setBirth_day(newCustomer.getBirth_day());
+                customer.setAddress(newCustomer.getAddress());
                 return customerRepository.save(customer);
             })
-            .orElseGet(() -> {
-                return customerRepository.save(newCustomer);
-            }
-        );
+            .orElseThrow(() -> new NotFoundExecptionHandle("Could not found customer: " + id));
     }
 
     @Override

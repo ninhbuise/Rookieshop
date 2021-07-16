@@ -1,5 +1,7 @@
 package com.enashtech.rookieserver.service;
 
+import java.util.List;
+
 import com.enashtech.rookieserver.entity.OrderDetail;
 import com.enashtech.rookieserver.repository.OrderDetailRepository;
 
@@ -18,6 +20,11 @@ public class OrderDetailServiceImpl implements OrderDetailService {
     @Override
     public OrderDetail saveOrderDetail(OrderDetail orderDetail) {
         return orderDetailRepository.save(orderDetail);
+    }
+
+    @Override
+    public List<OrderDetail> getListProductsByStoreName(String name) {
+        return orderDetailRepository.getListProductsByStoreName(name);
     }
     
 }

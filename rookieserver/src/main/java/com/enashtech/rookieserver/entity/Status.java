@@ -6,6 +6,6 @@ public enum Status {
     SHIPPING, // This status when the order on the way to customer
     COMPLETE, // This status means that the order is created, paid, and shipped to customer.
     CANCELED, // This status is assigned manually in the Admin or, for some payment gateways, when the customer does not pay within the specified time.
-    OPEN, // This status mean user can use systeam
-    LOCKED // this staus mean user have been locked
+    ACTIVE, // This status mean user can use systeam
+    BANNED // this staus mean user have been ban from system
 }

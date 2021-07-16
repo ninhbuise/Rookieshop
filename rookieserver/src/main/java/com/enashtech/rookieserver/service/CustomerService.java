@@ -9,7 +9,7 @@ public interface CustomerService {
     Customer findCustomerById(int id);
     Customer findCustomerByUserName(String username);
     Customer saveCustomer(Customer newCustomer);
-    Customer updateCustomer(Customer newCustomer, int id);
+    Customer updateCustomer(Customer newCustomer);
     void deleteCustomerById(int id);
     boolean existsByEmail(String email);
     boolean existsByPhone(String phone);
