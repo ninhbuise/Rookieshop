@@ -7,58 +7,58 @@ import { Button, ButtonGroup } from 'reactstrap';
 import 'react-gallery-carousel/dist/index.css';
 import './ProductDetail.scss';
 
-const images = [
-    {
-        src: '/images/chup-anh-san-pham-nuoc-2.jpg'
-    },
-    {
-        src: '/images/Chanel5_product_photography.jpg'
-    },
-    {
-        src: '/images/HummingbirdSkincare_byProductPhotographer_JuliaMalinowska_13.jpg'
-    },
-    {
-        src: '/images/photo-1615900119312-2acd3a71f3aa.jfif'
-    },
-    {
-        src: '/images/Your-DIY-Product-Photography-Resource-Guide.jpg'
-    }
-]
-
 class ProductDetail extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
+            item: [],
+            images: [],
+            sizes: [], 
             cSelected: [],
             setCSelected: [],
-            rSelected: 'M',
-            setRSelected: null,
+            rSelected: ['M', 'L', 'XL'],
+            setRSelected: 0,
             number: 0,
             value: 1
         };
     }
     
-    componentDidMount () {
-        const script = document.createElement("script");
-    
-        script.src = "./src/bootstrap-input-spinner.js";
-        script.async = true;
-    
-        document.body.appendChild(script);
+    componentDidMount() {
+        const id = new URLSearchParams(window.location.search).get(`id`);
+        fetch("http://localhost:8080/api/shop/product/" + id)
+            .then(res => res.json())
+            .then(
+            (result) => {
+                this.setState({
+                    isLoaded: true,
+                    item: result
+                });
+                result.images.map(img => {
+                    this.setState({
+                        images: [...this.state.images, {src: img.url}]
+                    })
+                });
+                result.sizes.map(size => {
+                    this.setState({
+                        sizes: [...this.state.sizes, {id: size.id, size_name: size.size_name}]
+                    })
+                });
+            },
+            // Note: it's important to handle errors here
+            // instead of a catch() block so that we don't swallow
+            // exceptions from actual bugs in components.
+            (error) => {
+                this.setState({
+                    isLoaded: true,
+                    error
+                });
+            }
+        )
+        
     }
 
     render() {
-        const id = new URLSearchParams(window.location.search).get(`id`);
-
-        const onCheckboxBtnClick = (selected) => {
-            const index = this.state.cSelected.indexOf(selected);
-            if (index < 0) {
-              this.state.cSelected.push(selected);
-            } else {
-                this.state.cSelected.splice(index, 1);
-            }
-            this.state.setCSelected([...this.state.cSelected]);
-        }
+        const item = this.state.item
         return (
             <div>
                 <div class="page-heading products-heading header-text">
@@ -78,7 +78,7 @@ class ProductDetail extends React.Component {
                         <div class="product-item">
                             <div class="row align-items-start">
                                 <div class="col-5">
-                                    <Carousel images={images}
+                                    <Carousel images={this.state.images}
                                         style={{backgroundColor: "#fff",
                                             width: '100%',
                                             height: 560,
@@ -90,7 +90,7 @@ class ProductDetail extends React.Component {
                                 </div>
                                 <div class="col-7">
                                     <div class="product-title">
-                                        Áo khoác nam chất kaki 2 lớp xịn xò Julido Store mẫu mới theo xu hướng thời trang Trend QA02
+                                        {item.name}
                                     </div>
                                     <div class="product-rating">
                                         <StarRatings class="star-ratings"
@@ -105,13 +105,19 @@ class ProductDetail extends React.Component {
                                     </div>
                                     <div class="price">
                                         <small>Sale: </small>
-                                        <Price cost="93" currency="$"/>
-                                        <p>Size: {this.state.rSelected}</p>
-                                        <ButtonGroup>
-                                            <Button outline color="primary" active={this.state.rSelected === 1}>L</Button>
-                                            <Button outline color="primary" active={this.state.rSelected === 2}>M</Button>
-                                            <Button outline color="primary" onClick={() => this.state.setRSelected(3)} active={this.state.rSelected === 3}>XL</Button>
-                                        </ButtonGroup>
+                                        <Price cost={item.price} currency="$"/>
+                                        {this.state.sizes[this.state.setRSelected] === undefined ? '' : 
+                                            <div>
+                                                <p>Size: {this.state.sizes[this.state.setRSelected].size_name}</p>
+                                                <ButtonGroup>
+                                                    {this.state.sizes.map(size => (
+                                                        <Button outline color="primary" onClick={() => this.setState({setRSelected: this.state.sizes.indexOf(size)})} >
+                                                            {size.size_name}
+                                                        </Button>
+                                                    ))}
+                                                </ButtonGroup>
+                                            </div>
+                                        }
                                     </div>
                                     <p class="amount">Amount</p>
                                     <div class="number-input">

@@ -1,5 +1,6 @@
 import React from 'react'
 import { Link } from 'react-router-dom';
+import './Product-item.scss'
 
 class ProductItem extends React.Component {
     render() {
@@ -7,16 +8,13 @@ class ProductItem extends React.Component {
         return (
             <div class="col-lg-4 col-md-4 all des">
                 <div class="product-item">
-                    <Link to={{pathname: `/${item.title}`, search: `?id=${item.id}`}}>
-                        <img src={item.url} alt=""/>
+                    <Link to={{pathname: `/${item.name}`, search: `?id=${item.id}`}}>
+                        <img src={item.images[0].url} alt="" class="image-product"/>
                     </Link>
-                    {/* <Link to={location => ({ ...location, pathname: `/${item.title}?id=${item.id}` })} >
-                        <img src={item.url} alt=""/>
-                    </Link> */}
                     <div class="down-content">
-                        <h4>Tittle goes here</h4>
-                        <h6>$18.25</h6>
-                        <p>{item.title}</p>
+                        <h4>{item.productType.product_type}</h4>
+                        <h6>${item.price}</h6>
+                        <p>{item.name}</p>
                         <span>Reviews (12)</span>
                     </div>
                 </div>

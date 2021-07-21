@@ -13,7 +13,7 @@ class Product extends react.Component {
       }
     
     componentDidMount() {
-        fetch("https://mocki.io/v1/2327fed4-54cc-4eae-b7e0-38380e78364c")
+        fetch("http://localhost:8080/api/shop")
             .then(res => res.json())
             .then(
             (result) => {
@@ -63,7 +63,7 @@ class Product extends react.Component {
                                     </div>
                                 </div>
                                 {items.map(item => (
-                                    // {console.log(item.id)}
+                                    // console.log(item),
                                     <ProductItem key={item.id} item={item}/>
                                 ))}
                             </div>
