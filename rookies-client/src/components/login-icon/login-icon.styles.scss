@@ -1,0 +1,23 @@
+.cart-icon {
+  width: 90px;
+  height: 45px;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+
+  .login-icon {
+    width: 45px;
+    height: 45px;
+    margin-bottom: 14px;
+  }
+
+  .user-name {
+    position: absolute;
+    font-size: 14px;
+    font-weight: bold;
+    top: 30px;
+    color: white;
+  }
+}
