@@ -29,11 +29,21 @@
     }
 }
 
+.flex-container {
+    display: flex;
+}
+
+.flex-child {
+    flex: 0.3;
+}
+
 .bt-buy {
     display: block;
     margin-top: 20px;
     margin-bottom: 20px;
-    width: 400px;
+    Button {
+        width: -webkit-fill-available;
+    }
 }
 
 input[type="number"] {

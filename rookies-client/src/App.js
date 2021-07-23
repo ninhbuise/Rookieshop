@@ -5,6 +5,7 @@ import Header from "./components/header/Header";
 import Product from "./components/product/Product";
 import ProductDetail from "./components/product-detail/ProductDetail";
 import SignInAndSignUpPage from "./components/sign-in-and-sign-up/sign-in-and-sign-up.component"
+import CheckOut from "./components/check-out/CheckOut";
 
 import './App.css';
 
@@ -15,15 +16,18 @@ function App() {
       <React.Fragment>
         <Header/>
         <Switch>
-        <Route exact path="/">
-          <Product/>
-        </Route>
-        <Route exact path='/signin'>
-          <SignInAndSignUpPage />
-        </Route> : 
-        <Route exact path="/:ProductName">
-          <ProductDetail />
-        </Route>
+          <Route exact path="/">
+            <Product/>
+          </Route>
+          <Route exact path="/signin">
+            <SignInAndSignUpPage />
+          </Route>
+          <Route exact path="/checkout">
+            <CheckOut/>
+          </Route> 
+          <Route exact path="/:ProductName">
+            <ProductDetail />
+          </Route>
       </Switch>
       </React.Fragment>
     </BrowserRouter>

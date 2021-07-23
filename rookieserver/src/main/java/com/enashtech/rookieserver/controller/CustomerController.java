@@ -8,6 +8,7 @@ import com.enashtech.rookieserver.entity.*;
 import com.enashtech.rookieserver.service.CustomerService;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 @CrossOrigin(origins = "*", maxAge = 3600)
@@ -48,8 +50,9 @@ public class CustomerController {
         return customerService.updateCustomer(newCustomer);
     }
 
-    @PostMapping("/valid")
-    OrderDetail check(@Valid @RequestBody OrderDetail test) {
-        return test;
+    @GetMapping("/customer")
+    @ResponseBody
+    Customer getUserByUsername(Authentication authentication) {
+        return customerService.findCustomerByUserName(authentication.getName());
     }
 }

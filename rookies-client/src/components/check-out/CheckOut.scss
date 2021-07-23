@@ -1,0 +1,140 @@
+.products {
+    margin-bottom: 4em;
+}
+
+.total-tr {
+    border-top: 1px solid red;
+}
+
+.no-item {
+    font-size: 2em;
+}
+
+.small-img {
+    width: 8em;
+    height: 8em;
+}
+
+.product-name {
+    text-align: justify;
+}
+
+.price {
+    font-size: 1.8em;
+}
+
+.link {
+    color: #fff;
+}
+
+.link:hover {
+    color: #f33f3f;
+}
+
+.order-info {
+    height: auto;
+    background-color: #ffd042;
+    text-align: left;
+    p {
+        font-size: 1em;
+        margin-top: 0.4em;
+    }
+    .price {
+        font-size: 1em;
+        text-align: right;
+    }
+
+    button {
+        width: -webkit-fill-available;
+        margin-bottom: 0.6em;
+    }
+    hr {
+        margin-top: 0.2em;
+        margin-bottom: 0.4em;
+    }
+}
+
+.number-input {
+    border: 2px solid #ddd;
+    display: inline-flex;
+    margin-top: 10px;
+    margin-bottom: 20px;
+}
+
+.number-input,
+.number-input * {
+    box-sizing: border-box;
+}
+
+.number-input button {
+    outline: none;
+    -webkit-appearance: none;
+    background-color: transparent;
+    border: none;
+    align-items: center;
+    justify-content: center;
+    width: 2rem;
+    height: 2rem;
+    cursor: pointer;
+    margin: 0;
+    position: relative;
+}
+
+.number-input button:before,
+.number-input button:after {
+    display: inline-block;
+    position: absolute;
+    content: "";
+    width: 1rem;
+    height: 2px;
+    background-color: #212121;
+    transform: translate(-50%, -50%);
+}
+.number-input button.plus:after {
+    transform: translate(-50%, -50%) rotate(90deg);
+}
+
+.number-input input[type="number"] {
+    font-family: sans-serif;
+    max-width: 2rem;
+    padding: 0.5rem;
+    border: solid #ddd;
+    border-width: 0 2px;
+    font-size: 1rem;
+    height: 2rem;
+    text-align: center;
+}
+
+.modal {
+    font-size: 12px;
+}
+.modal > .header {
+    width: 100%;
+    border-bottom: 1px solid gray;
+    font-size: 18px;
+    text-align: center;
+    padding: 5px;
+}
+.modal > .content {
+    width: 100%;
+    padding: 10px 5px;
+}
+.modal > .actions {
+    width: 100%;
+    padding: 10px 5px;
+    margin: auto;
+    text-align: center;
+}
+.modal > .close {
+    cursor: pointer;
+    position: absolute;
+    display: block;
+    padding: 2px 5px;
+    line-height: 20px;
+    right: -10px;
+    top: -10px;
+    font-size: 24px;
+    background: #ffffff;
+    border-radius: 18px;
+    border: 1px solid #cfcece;
+}

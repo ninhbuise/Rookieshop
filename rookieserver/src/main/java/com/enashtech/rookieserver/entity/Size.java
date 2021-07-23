@@ -22,6 +22,6 @@ public class Size implements Serializable {
     private int id;
 
     @NotBlank
-    @Length(min = 3, max = 30)
+    @Length(min = 1, max = 30)
     private String size_name;
 }

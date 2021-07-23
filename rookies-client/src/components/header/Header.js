@@ -45,10 +45,12 @@ class Header extends react.Component {
                 </li>
               </ul>
             </div>
-            <div onClick={ () => this.handleClick() }>
+            <div onClick={() => this.handleClick()}>
              <LoginIcon />
             </div>
-            <CartIcon />
+            <div onClick={() => this.props.history.push('/checkout')}> 
+              <CartIcon /> 
+            </div>
           </div>
         </nav>
       </header>

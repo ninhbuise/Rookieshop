@@ -45,7 +45,8 @@ public class ProductServiceImpl implements ProductService{
     }
 
     @Override
-    public Product updateProduct(Product newProduct, int id) {
+    public Product updateProduct(Product newProduct) {
+        int id = newProduct.getId();
         return productRepository.findById(id)
             .map(product -> {
                 product.setName(newProduct.getName());
@@ -57,10 +58,7 @@ public class ProductServiceImpl implements ProductService{
                 product.setProductDetail(newProduct.getProductDetail());
                 return productRepository.save(product);
             })
-            .orElseGet(()-> {
-                newProduct.setId(id);
-                return productRepository.save(newProduct);
-            });
+            .orElseThrow(() -> new NotFoundExecptionHandle("Could not found product: " + id));
     }
 
     @Override

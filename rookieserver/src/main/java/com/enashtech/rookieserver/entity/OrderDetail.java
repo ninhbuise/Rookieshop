@@ -30,6 +30,16 @@ public class OrderDetail implements Serializable {
     @JoinColumn(name = "product_id", nullable = false)
     private Product product;
 
+    @NotNull
+    @ManyToOne
+    @JoinColumn(name = "color_id", nullable = false)
+    private Color color;
+
+    @NotNull
+    @ManyToOne
+    @JoinColumn(name = "size_id", nullable = false)
+    private Size size;
+
     public OrderDetail() {
     }
 }

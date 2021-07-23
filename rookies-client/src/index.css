@@ -315,13 +315,20 @@ header .navbar {
 	background-position: center center;
 }
 
+.banner-item-02 {
+	padding: 200px 0px;
+	background-image: url(./assets/front-view-woman-with-shopping-bag-concept.jpg);
+	background-size: cover;
+	background-repeat: no-repeat;
+	background-position: center center;
+}
+
 .banner .banner-item {
 	max-height: 600px;
 }
 
 .banner .text-content {
 	position: absolute;
-	top: 50%;
 	transform: translateY(-50%);
 	text-align: center;
 	width: 100%;

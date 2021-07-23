@@ -83,7 +83,6 @@ public class Product implements Serializable {
     private Store store;
 
     @Valid
-    @NotNull
     @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "product")
     @PrimaryKeyJoinColumn
     @EqualsAndHashCode.Exclude

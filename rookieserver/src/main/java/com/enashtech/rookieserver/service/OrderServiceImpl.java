@@ -53,6 +53,8 @@ public class OrderServiceImpl implements OrderService {
                 orderDetail.setAmount(detail.getAmount());
                 product.setQuantity(remaining_amount);
                 orderDetail.setProduct(product);
+                orderDetail.setColor(detail.getColor());
+                orderDetail.setSize(detail.getSize());
                 orderDetails.add(orderDetail);
             } else {
                 throw new RuntimeExceptionHandle(
@@ -79,8 +81,7 @@ public class OrderServiceImpl implements OrderService {
         order.setOrderDetails(orderDetails);
         // update product Quantity
         orderDetails.forEach(detail -> {
-            int id = detail.getProduct().getId();
-            productService.updateProduct(detail.getProduct(), id);
+            productService.updateProduct(detail.getProduct());
             orderDetailService.saveOrderDetail(detail);
         });
         orderRepository.save(order);
