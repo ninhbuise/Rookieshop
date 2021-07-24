@@ -1,8 +1,11 @@
 INSERT INTO public.address (id, city, district, street, ward)
-VALUES (56, 'TP.HCM', 'Q10', '3/81 Thành Thái', 'P14'),
-	(79, 'Lâm Đồng', 'Đà Lạt', 'Tổ Lầm Văn Thạch', 'P11'),
-	(86, 'Lâm Đồng', 'Đà Lạt', 'Tổ Lầm Văn Thanh', 'P11'),
-	(89, '314', 'Đà Lạt', 'Tổ Lầm Văn Thanh', 'P11');
+VALUES (
+		79,
+		'Lâm Đồng',
+		'Đà Lạt',
+		'Tổ Lầm Văn Thạch',
+		'P11'
+	)
 INSERT INTO public.color (id, color_name, hex_code)
 VALUES (1, 'Trắng', '#FFFFFF'),
 	(2, 'Đen', '#000000');
@@ -101,7 +104,14 @@ INSERT INTO public.user_roles (user_id, role_id)
 VALUES (1, 3),
 	(2, 2),
 	(3, 1);
-INSERT INTO public.product (id, "name", price, quantity, product_type, store_id)
+INSERT INTO public.product (
+		id,
+		"name",
+		price,
+		quantity,
+		product_type,
+		store_id
+	)
 VALUES (
 		1,
 		'Áo Hoodie Nỉ Bông Unisex Streetwear Lục Lăng ( unisex nam nữ đều mặc được)',

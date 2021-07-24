@@ -1,6 +1,5 @@
 import react from 'react'
 import { withRouter } from 'react-router-dom';
-import Cookies from 'universal-cookie';
 
 import CartIcon from '../cart-icon/cart-icon.component'
 import LoginIcon from '../login-icon/login-icon.component'
@@ -8,10 +7,8 @@ import LoginIcon from '../login-icon/login-icon.component'
 class Header extends react.Component {
 
   handleClick() {
-    const cookies = new Cookies();
-    const token = cookies.get('token');
-
-    token === undefined ?
+    const token = localStorage.getItem('token');
+    token === null ?
       this.props.history.push('/signin') :
       this.props.history.push('/')
   }

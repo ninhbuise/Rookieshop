@@ -21,15 +21,20 @@ public class OrderServiceImpl implements OrderService {
     private final CustomerService customerService;
     private final OrderDetailService orderDetailService;
     private final AddressService addressService;
+    private final SizeService sizeService;
+    private final ColorService colorService;
 
     @Autowired
     public OrderServiceImpl(ProductService productService, OrderRepository orderRepository,
-            CustomerService customerService, OrderDetailService orderDetailService, AddressService addressService) {
+            CustomerService customerService, OrderDetailService orderDetailService, AddressService addressService,
+            SizeService sizeService, ColorService colorService) {
         this.productService = productService;
         this.orderRepository = orderRepository;
         this.customerService = customerService;
         this.orderDetailService = orderDetailService;
         this.addressService = addressService;
+        this.sizeService = sizeService;
+        this.colorService = colorService;
     }
 
     @Override
@@ -53,12 +58,12 @@ public class OrderServiceImpl implements OrderService {
                 orderDetail.setAmount(detail.getAmount());
                 product.setQuantity(remaining_amount);
                 orderDetail.setProduct(product);
-                orderDetail.setColor(detail.getColor());
-                orderDetail.setSize(detail.getSize());
+                orderDetail.setColor(colorService.findByColorId(detail.getColor_id()));
+                orderDetail.setSize(sizeService.findSizeById(detail.getSize_id()));
                 orderDetails.add(orderDetail);
             } else {
                 throw new RuntimeExceptionHandle(
-                        "The product is not in sufficient quantity, product: " + detail.getProduct_id());
+                        "The product is not in sufficient quantity, product: " + product.getName());
             }
         });
 

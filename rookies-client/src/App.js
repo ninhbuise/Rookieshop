@@ -6,6 +6,7 @@ import Product from "./components/product/Product";
 import ProductDetail from "./components/product-detail/ProductDetail";
 import SignInAndSignUpPage from "./components/sign-in-and-sign-up/sign-in-and-sign-up.component"
 import CheckOut from "./components/check-out/CheckOut";
+import AdminBoard from "./components/admin-board/admin-board";
 
 import './App.css';
 
@@ -18,6 +19,9 @@ function App() {
         <Switch>
           <Route exact path="/">
             <Product/>
+          </Route>
+          <Route exact path="/admin">
+            <AdminBoard />
           </Route>
           <Route exact path="/signin">
             <SignInAndSignUpPage />

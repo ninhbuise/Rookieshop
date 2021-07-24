@@ -1,7 +1,11 @@
 import React from 'react'
 import { Link, withRouter } from 'react-router-dom';
 import { Button, Table } from 'reactstrap';
+import { get, post } from "../../HttpHelper";
 import Price from 'react-price';
+
+import { ValidatorForm, TextValidator } from 'react-material-ui-form-validator';
+import TextField from '@material-ui/core/TextField';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
@@ -13,14 +17,26 @@ import trash from '../../assets/trash.svg'
 
 class CheckOut extends React.Component {
   constructor(props) {
-    const cart = JSON.parse(localStorage.getItem('cart'))
     super(props);
+    const cart = JSON.parse(localStorage.getItem('cart'))
+    const roles = JSON.parse(localStorage.getItem('roles'))
+    const user = JSON.parse(localStorage.getItem('user'))
+    if (roles !== null)
+      roles.map(role => {
+        if (role !== "ROLE_CUSTOMER")
+          this.props.history.push('/')
+      })
+
     this.state = {
       cart: cart,
-      open: false
+      open: false,
+      showfrom: false,
+      shownotice: false,
+      notice: '',
+      user: user === null ? [] : user,
+      usertemp: []
     };
   }
-
 
   onChange(index, pres) {
     let amount = this.state.cart[index].amount
@@ -50,8 +66,44 @@ class CheckOut extends React.Component {
     this.setState({ open: false })
   }
 
+  buy() {
+    if (this.state.user.lengh === 0)
+      this.props.history.push('/signin')
+    const detail = []
+    const address = {
+      "city": this.state.user.city,
+      "district": this.state.user.district,
+      "ward": this.state.user.ward,
+      "street": this.state.user.street
+    }
+    this.state.cart.map(cart => {
+      detail.push({
+        "product_id": cart.id,
+        "amount": cart.amount,
+        "size_id": cart.size_id,
+        "color_id": cart.color_id
+      })
+    })
+    const body = {
+      "detailDTOs": detail,
+      "phone": this.state.user.phone,
+      "address": address
+
+    }
+    post('/api/shop/order', body)
+      .then(response => {
+        console.error(response.data);
+        this.setState({ notice: "Order Success ^^", cart: [], shownotice: true })
+        localStorage.removeItem('cart')
+      })
+      .catch(err => {
+        console.error(err.response.data);
+        this.setState({ notice: JSON.stringify(err.response.data), shownotice: true })
+      })
+  }
+
   render() {
-    let total = 0;
+    let total = 0
     return (
       <div>
         <div class="banner header-text">
@@ -140,10 +192,123 @@ class CheckOut extends React.Component {
                             </Table>
                           </div>
                           <div className="col-md-2 order-info">
-                            <Link to="#" className="link">Delivery to</Link>
+                            <Link onClick={() => this.setState({ showfrom: true, usertemp: this.state.user })} className="link">Delivery to</Link>
+                            <Dialog open={this.state.showfrom} aria-labelledby="form-dialog-title">
+                              <DialogTitle id="form-dialog-title">Delivery to</DialogTitle>
+                              <DialogContent>
+                                <DialogContentText>
+                                  Update your new address here!
+                                </DialogContentText>
+                                <ValidatorForm >
+                                  <TextValidator
+                                    style={{ margin: 12, width: 400 }}
+                                    value={this.state.usertemp.phone}
+                                    validators={['matchRegexp:^$|[0-9]{9,11}']}
+                                    errorMessages={['Phone mush match 9-11 digits number']}
+                                    onChange={(event) => {
+                                      this.setState({
+                                        usertemp: {
+                                          name: this.state.usertemp.name,
+                                          phone: event.target.value,
+                                          city: this.state.usertemp.city,
+                                          district: this.state.usertemp.district,
+                                          ward: this.state.usertemp.ward,
+                                          street: this.state.usertemp.street
+                                        }
+                                      })
+                                    }}
+                                    label="Phone"
+                                    type="number" />
+                                  <TextField
+                                    style={{ margin: 12, width: 400 }}
+                                    value={this.state.usertemp.city}
+                                    validators={['required']}
+                                    errorMessages={['this field is required']}
+                                    onChange={(event) => {
+                                      this.setState({
+                                        usertemp: {
+                                          name: this.state.usertemp.name,
+                                          phone: this.state.usertemp.phone,
+                                          city: event.target.value,
+                                          district: this.state.usertemp.district,
+                                          ward: this.state.usertemp.ward,
+                                          street: this.state.usertemp.street
+                                        }
+                                      })
+                                    }}
+                                    label="Province/City"
+                                    type="text" />
+                                  <TextField
+                                    style={{ margin: 12, width: 400 }}
+                                    value={this.state.usertemp.district}
+                                    validators={['required']}
+                                    errorMessages={['this field is required']}
+                                    onChange={(event) => {
+                                      this.setState({
+                                        usertemp: {
+                                          name: this.state.usertemp.name,
+                                          phone: this.state.usertemp.phone,
+                                          city: this.state.usertemp.city,
+                                          district: event.target.value,
+                                          ward: this.state.usertemp.ward,
+                                          street: this.state.usertemp.street
+                                        }
+                                      })
+                                    }}
+                                    label="District"
+                                    type="text" />
+                                  <TextField
+                                    style={{ margin: 12, width: 400 }}
+                                    value={this.state.usertemp.ward}
+                                    validators={['required']}
+                                    errorMessages={['this field is required']}
+                                    onChange={(event) => {
+                                      this.setState({
+                                        usertemp: {
+                                          name: this.state.usertemp.name,
+                                          phone: this.state.usertemp.phone,
+                                          city: this.state.usertemp.city,
+                                          district: this.state.usertemp.district,
+                                          ward: event.target.value,
+                                          street: this.state.usertemp.street
+                                        }
+                                      })
+                                    }}
+                                    label="Wards"
+                                    type="text" />
+                                  <TextField
+                                    style={{ margin: 12, width: 400 }}
+                                    value={this.state.usertemp.street}
+                                    validators={['required']}
+                                    errorMessages={['this field is required']}
+                                    onChange={(event) => {
+                                      this.setState({
+                                        usertemp: {
+                                          name: this.state.usertemp.name,
+                                          phone: this.state.usertemp.phone,
+                                          city: this.state.usertemp.city,
+                                          district: this.state.usertemp.district,
+                                          ward: this.state.usertemp.ward,
+                                          street: event.target.value
+                                        }
+                                      })
+                                    }}
+                                    label="Street"
+                                    type="text" /> <br></br>
+                                </ValidatorForm>
+                              </DialogContent>
+                              <DialogActions>
+                                <Button onClick={() => this.setState({ showfrom: false })} >
+                                  Cancel
+                                </Button>
+                                <Button type="submit" onClick={() => this.setState({ showfrom: false, user: this.state.usertemp })} color="primary">
+                                  Submit
+                                </Button>
+                              </DialogActions>
+                            </Dialog>
                             <br></br>
-                            <span>Nguyễn Ngọc Quỳnh Hương | 0339737498</span>
-                            <p>Đà Lạt, P11, Tổ Lâm Văn Thạch</p>
+                            <span>{this.state.user.name} | {this.state.user.phone}</span>
+                            <p>{this.state.user.city}, {this.state.user.district}, {this.state.user.ward}, {this.state.user.street}</p>
                             <hr></hr>
                             <Table>
                               <tr>
@@ -163,12 +328,29 @@ class CheckOut extends React.Component {
                                 <td className="price"><Price cost={total.toFixed(2)} currency="$" /></td>
                               </tr>
                             </Table>
-                            <Button color="danger">ORDER</Button>
+                            <Button color="danger" onClick={() => this.buy()}>ORDER</Button>
                           </div>
                         </div>
                       </div> :
                       <p class='no-item'>Oops you don't have any purchase, go to <a href="/">shop</a> and get one for you</p>
                   }
+                  <Dialog
+                    open={this.state.shownotice}
+                    aria-labelledby="alert-dialog-title"
+                    aria-describedby="alert-dialog-description"
+                  >
+                    <DialogTitle id="alert-dialog-title">{"Notification"}</DialogTitle>
+                    <DialogContent>
+                      <DialogContentText id="alert-dialog-description">
+                        {this.state.notice}
+                      </DialogContentText>
+                    </DialogContent>
+                    <DialogActions>
+                      <Button onClick={() => this.setState({ shownotice: false })} color="primary" autoFocus>
+                        Okay!
+                      </Button>
+                    </DialogActions>
+                  </Dialog>
                 </div>
               </div>
             </div>

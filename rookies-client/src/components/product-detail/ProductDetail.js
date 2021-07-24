@@ -68,8 +68,8 @@ class ProductDetail extends React.Component {
     //find product in cart and in
     cart.map((i) => {
       if (i.id === this.state.item.id && 
-          i.size === this.state.sizes[this.state.sizeSelected] &&
-          i.color === this.state.colors[this.state.colorSelected]) {
+          i.size_id === this.state.sizes[this.state.sizeSelected].id &&
+          i.color_id === this.state.colors[this.state.colorSelected].id) {
         i.amount += this.state.value
         localStorage.setItem('cart', JSON.stringify(cart))
         isExit = true
@@ -82,8 +82,8 @@ class ProductDetail extends React.Component {
         name: this.state.item.name,
         price: this.state.item.price,
         url: this.state.item.images[0].url,
-        size: this.state.sizes[this.state.sizeSelected],
-        color: this.state.colors[this.state.colorSelected],
+        size_id: this.state.sizes[this.state.sizeSelected].id,
+        color_id: this.state.colors[this.state.colorSelected].id,
         amount: this.state.value,
       }
       cart.push(item)

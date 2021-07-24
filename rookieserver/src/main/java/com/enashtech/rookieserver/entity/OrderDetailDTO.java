@@ -16,13 +16,13 @@ public class OrderDetailDTO {
     @NotNull
     private int amount;
 
-    @Valid
+    @Positive
     @NotNull
-    private Size size;
+    private int size_id;
 
-    @Valid
+    @Positive
     @NotNull
-    private Color color;
+    private int color_id;
 
     OrderDetailDTO() {
     }
