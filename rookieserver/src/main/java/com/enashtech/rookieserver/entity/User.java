@@ -20,7 +20,6 @@ import javax.persistence.UniqueConstraint;
 import javax.persistence.Table;
 import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.Size;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -34,7 +33,6 @@ public class User implements Serializable {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
     @NotBlank
-    @Size(min = 3, max = 20)
     private String username;
     @NotBlank
     private String password;

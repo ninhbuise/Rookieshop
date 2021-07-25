@@ -29,7 +29,7 @@ class Product extends react.Component {
   render() {
     const items = this.state.items;
     return (
-      <body>
+      <div>
         <div class="banner header-text">
           <div class="owl-banner owl-carousel">
             <div class="banner-item-01">
@@ -55,14 +55,13 @@ class Product extends react.Component {
                   </div>
                 </div>
                 {items.map(item => (
-                  // console.log(item),
                   <ProductItem key={item.id} item={item} />
                 ))}
               </div>
             </div>
           </div>
         </div>
-      </body>
+      </div>
     )
   }
 }

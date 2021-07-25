@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import com.enashtech.rookieserver.entity.Image;
 import com.enashtech.rookieserver.entity.Role;
 import com.enashtech.rookieserver.entity.RoleName;
 import com.enashtech.rookieserver.entity.Status;
@@ -17,14 +18,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
-public class UserServiceImpl implements UserService{
+public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
     private final RoleService roleService;
+    private final ImageService imageService;
 
     @Autowired
-    public UserServiceImpl(UserRepository userRepository, RoleService roleService) {
+    public UserServiceImpl(UserRepository userRepository, RoleService roleService, ImageService imageService) {
         this.userRepository = userRepository;
         this.roleService = roleService;
+        this.imageService = imageService;
     }
 
     @Override
@@ -35,13 +38,13 @@ public class UserServiceImpl implements UserService{
     @Override
     public User getUserById(int id) {
         return userRepository.findById(id)
-            .orElseThrow(() -> new NotFoundExecptionHandle("Could not found user: " + id));
+                .orElseThrow(() -> new NotFoundExecptionHandle("Could not found user: " + id));
     }
 
     @Override
     public User getUserByUsername(String username) {
         return userRepository.findByUsername(username)
-            .orElseThrow(() -> new NotFoundExecptionHandle("Could not found user: " + username));
+                .orElseThrow(() -> new NotFoundExecptionHandle("Could not found user: " + username));
     }
 
     @Override
@@ -52,79 +55,79 @@ public class UserServiceImpl implements UserService{
     @Override
     public User updateUser(User newUser) {
         int id = newUser.getId();
-        return userRepository.findById(id)
-            .map(user -> {
-                user.setPassword(newUser.getPassword());
-                user.setAvatar(newUser.getAvatar());
-                return userRepository.save(user);
-            })
-            .orElseThrow(() -> new NotFoundExecptionHandle("Could not found user: " + id));
+        return userRepository.findById(id).map(user -> {
+            user.setPassword(newUser.getPassword());
+            user.setAvatar(newUser.getAvatar());
+            return userRepository.save(user);
+        }).orElseThrow(() -> new NotFoundExecptionHandle("Could not found user: " + id));
+    }
+
+    @Override
+    public User updateUserAvatar(Image avatar, String username) {
+        User newUser = getUserByUsername(username);
+        newUser.setAvatar(avatar);
+        imageService.saveImage(avatar);
+        return userRepository.save(newUser);
     }
 
     @Override
     public User updateUserStatus(int id, String status) {
-        return userRepository.findById(id)
-            .map(user -> {
-                //Check if user have role ADMIN
-                Role roleAdmin = roleService.findByName(RoleName.ROLE_ADMIN)
+        return userRepository.findById(id).map(user -> {
+            // Check if user have role ADMIN
+            Role roleAdmin = roleService.findByName(RoleName.ROLE_ADMIN)
                     .orElseThrow(() -> new RuntimeExceptionHandle("Role is not found."));
-                if(user.getRoles().contains(roleAdmin))
-                    throw new RuntimeExceptionHandle("Could not change role for user has role 'ADMIN' user: " + id);
-                //check stats invalid
-                switch(status.toLowerCase()) {
-                    case "active":
-                        user.setStatus(Status.ACTIVE);
+            if (user.getRoles().contains(roleAdmin))
+                throw new RuntimeExceptionHandle("Could not change role for user has role 'ADMIN' user: " + id);
+            // check stats invalid
+            switch (status.toLowerCase()) {
+                case "active":
+                    user.setStatus(Status.ACTIVE);
                     break;
-                    case "banned":
-                        user.setStatus(Status.BANNED);
+                case "banned":
+                    user.setStatus(Status.BANNED);
                     break;
-                    default:
-                        throw new NotFoundExecptionHandle("Could not found status: " + status);
-                }
-                return userRepository.save(user);
-            })
-            .orElseThrow(() -> new NotFoundExecptionHandle("Could not found user: " + id));
+                default:
+                    throw new NotFoundExecptionHandle("Could not found status: " + status);
+            }
+            return userRepository.save(user);
+        }).orElseThrow(() -> new NotFoundExecptionHandle("Could not found user: " + id));
     }
 
     public User updateUserRole(int id, List<String> roles) {
-        if(roles.size() == 0)
+        if (roles.size() == 0)
             throw new RuntimeExceptionHandle("Roles can't be empty");
-        //lowcase list role
-        List<String> newRoles = roles.stream()
-                             .map(String::toLowerCase)
-                             .collect(Collectors.toList());
+        // lowcase list role
+        List<String> newRoles = roles.stream().map(String::toLowerCase).collect(Collectors.toList());
 
-        return userRepository.findById(id)
-            .map(user -> {
-                //Check if user have role ADMIN
-                Role roleAdmin = roleService.findByName(RoleName.ROLE_ADMIN)
+        return userRepository.findById(id).map(user -> {
+            // Check if user have role ADMIN
+            Role roleAdmin = roleService.findByName(RoleName.ROLE_ADMIN)
                     .orElseThrow(() -> new RuntimeExceptionHandle("Role is not found."));
-                if(user.getRoles().contains(roleAdmin) && !newRoles.contains("admin"))
-                    throw new RuntimeExceptionHandle("Could not remove role 'ADMIN' for user has role 'ADMIN' user: " + id);
+            if (user.getRoles().contains(roleAdmin) && !newRoles.contains("admin"))
+                throw new RuntimeExceptionHandle("Could not remove role 'ADMIN' for user has role 'ADMIN' user: " + id);
 
-                Set<Role> userRoles = new HashSet<>();
-                newRoles.forEach(role -> {
-                    switch (role.toLowerCase()) {
-                        case "admin":
-                            Role adminRole = roleService.findByName(RoleName.ROLE_ADMIN)
+            Set<Role> userRoles = new HashSet<>();
+            newRoles.forEach(role -> {
+                switch (role.toLowerCase()) {
+                    case "admin":
+                        Role adminRole = roleService.findByName(RoleName.ROLE_ADMIN)
                                 .orElseThrow(() -> new RuntimeExceptionHandle("Role is not found."));
-                                userRoles.add(adminRole);
-                            break;
-                        case "store":
-                            Role storeRole = roleService.findByName(RoleName.ROLE_STORE)
+                        userRoles.add(adminRole);
+                        break;
+                    case "store":
+                        Role storeRole = roleService.findByName(RoleName.ROLE_STORE)
                                 .orElseThrow(() -> new RuntimeExceptionHandle("Role is not found."));
-                                userRoles.add(storeRole);
-                            break;
-                        default:
-                            Role userRole = roleService.findByName(RoleName.ROLE_CUSTOMER)
+                        userRoles.add(storeRole);
+                        break;
+                    default:
+                        Role userRole = roleService.findByName(RoleName.ROLE_CUSTOMER)
                                 .orElseThrow(() -> new RuntimeExceptionHandle("Role is not found."));
-                                userRoles.add(userRole);
-                    }
-                });
-                user.setRoles(userRoles);
-                return userRepository.save(user);
-            })
-            .orElseThrow(() -> new NotFoundExecptionHandle("Could not found user: " + id));
+                        userRoles.add(userRole);
+                }
+            });
+            user.setRoles(userRoles);
+            return userRepository.save(user);
+        }).orElseThrow(() -> new NotFoundExecptionHandle("Could not found user: " + id));
     }
 
     @Override

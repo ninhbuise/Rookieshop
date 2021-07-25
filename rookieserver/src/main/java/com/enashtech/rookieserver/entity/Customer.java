@@ -6,6 +6,7 @@ import java.util.Date;
 import java.util.List;
 
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -18,10 +19,11 @@ import javax.persistence.UniqueConstraint;
 import javax.validation.Valid;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Past;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
+
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -33,6 +35,7 @@ import lombok.ToString;
     @UniqueConstraint(columnNames = { "phone" }),
     @UniqueConstraint(columnNames = { "email" }) 
 })
+@JsonIgnoreProperties({"hibernateLazyInitializer","handler"})
 public class Customer implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -53,7 +56,6 @@ public class Customer implements Serializable {
     @Size(min = 3, max = 30, message = "Cutomer's last name  should be in range 3-30")
     private String last_name;
     
-    @NotBlank
     @Pattern(regexp = "(^$|[0-9]{9,11})", message = "Phone mush match 9-11 digits number")
     private String phone;
     
@@ -61,13 +63,11 @@ public class Customer implements Serializable {
     @Email
     private String email;
     
-    @NotNull
     @Past
     private Date birth_day;
 
     @Valid
-    @NotNull
-    @ManyToOne
+    @ManyToOne(optional = true, fetch = FetchType.LAZY)
     @EqualsAndHashCode.Exclude
     @ToString.Exclude
     private Address address;
@@ -90,8 +90,6 @@ public class Customer implements Serializable {
         this.first_name = customerDTO.getFirst_name();
         this.last_name = customerDTO.getLast_name();
         this.email = customerDTO.getEmail();
-        this.phone = customerDTO.getPhone();
-        this.address = customerDTO.getAddress();
     }
 
     public Customer(int id, String first_name, String last_name) {

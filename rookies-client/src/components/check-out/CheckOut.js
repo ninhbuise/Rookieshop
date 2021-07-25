@@ -1,11 +1,10 @@
 import React from 'react'
 import { Link, withRouter } from 'react-router-dom';
 import { Button, Table } from 'reactstrap';
-import { get, post } from "../../HttpHelper";
+import { post } from "../../HttpHelper";
 import Price from 'react-price';
 
 import { ValidatorForm, TextValidator } from 'react-material-ui-form-validator';
-import TextField from '@material-ui/core/TextField';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
@@ -67,7 +66,7 @@ class CheckOut extends React.Component {
   }
 
   buy() {
-    if (this.state.user.lengh === 0)
+    if (this.state.user.length === 0)
       this.props.history.push('/signin')
     const detail = []
     const address = {
@@ -92,12 +91,10 @@ class CheckOut extends React.Component {
     }
     post('/api/shop/order', body)
       .then(response => {
-        console.error(response.data);
         this.setState({ notice: "Order Success ^^", cart: [], shownotice: true })
         localStorage.removeItem('cart')
       })
       .catch(err => {
-        console.error(err.response.data);
         this.setState({ notice: JSON.stringify(err.response.data), shownotice: true })
       })
   }
@@ -192,19 +189,28 @@ class CheckOut extends React.Component {
                             </Table>
                           </div>
                           <div className="col-md-2 order-info">
-                            <Link onClick={() => this.setState({ showfrom: true, usertemp: this.state.user })} className="link">Delivery to</Link>
+                            <Link onClick={() => {
+                              if (this.state.user.length === 0)
+                                this.props.history.push('/signin')
+                              this.setState({ showfrom: true, usertemp: this.state.user })
+                            }
+                            } className="link">Delivery to</Link>
                             <Dialog open={this.state.showfrom} aria-labelledby="form-dialog-title">
                               <DialogTitle id="form-dialog-title">Delivery to</DialogTitle>
                               <DialogContent>
                                 <DialogContentText>
                                   Update your new address here!
                                 </DialogContentText>
-                                <ValidatorForm >
+                                <ValidatorForm
+                                  ref="form"
+                                  onSubmit={() => this.setState({ showfrom: false, user: this.state.usertemp })}
+                                  noValidate={true} 
+                                >
                                   <TextValidator
                                     style={{ margin: 12, width: 400 }}
                                     value={this.state.usertemp.phone}
-                                    validators={['matchRegexp:^$|[0-9]{9,11}']}
-                                    errorMessages={['Phone mush match 9-11 digits number']}
+                                    validators={['required', 'matchRegexp:^$|[0-9]{9,11}']}
+                                    errorMessages={['this field is required', 'Phone mush match 9-11 digits number']}
                                     onChange={(event) => {
                                       this.setState({
                                         usertemp: {
@@ -219,7 +225,7 @@ class CheckOut extends React.Component {
                                     }}
                                     label="Phone"
                                     type="number" />
-                                  <TextField
+                                  <TextValidator
                                     style={{ margin: 12, width: 400 }}
                                     value={this.state.usertemp.city}
                                     validators={['required']}
@@ -238,7 +244,7 @@ class CheckOut extends React.Component {
                                     }}
                                     label="Province/City"
                                     type="text" />
-                                  <TextField
+                                  <TextValidator
                                     style={{ margin: 12, width: 400 }}
                                     value={this.state.usertemp.district}
                                     validators={['required']}
@@ -257,7 +263,7 @@ class CheckOut extends React.Component {
                                     }}
                                     label="District"
                                     type="text" />
-                                  <TextField
+                                  <TextValidator
                                     style={{ margin: 12, width: 400 }}
                                     value={this.state.usertemp.ward}
                                     validators={['required']}
@@ -276,7 +282,7 @@ class CheckOut extends React.Component {
                                     }}
                                     label="Wards"
                                     type="text" />
-                                  <TextField
+                                  <TextValidator
                                     style={{ margin: 12, width: 400 }}
                                     value={this.state.usertemp.street}
                                     validators={['required']}
@@ -294,17 +300,17 @@ class CheckOut extends React.Component {
                                       })
                                     }}
                                     label="Street"
-                                    type="text" /> <br></br>
+                                    type="text" />
+                                  <DialogActions>
+                                    <Button onClick={() => this.setState({ showfrom: false })} >
+                                      Cancel
+                                    </Button>
+                                    <Button type="submit" color="primary">
+                                      Submit
+                                    </Button>
+                                  </DialogActions>
                                 </ValidatorForm>
                               </DialogContent>
-                              <DialogActions>
-                                <Button onClick={() => this.setState({ showfrom: false })} >
-                                  Cancel
-                                </Button>
-                                <Button type="submit" onClick={() => this.setState({ showfrom: false, user: this.state.usertemp })} color="primary">
-                                  Submit
-                                </Button>
-                              </DialogActions>
                             </Dialog>
                             <br></br>
                             <span>{this.state.user.name} | {this.state.user.phone}</span>

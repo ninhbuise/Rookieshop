@@ -27,8 +27,12 @@ class ProductDetail extends React.Component {
     const id = new URLSearchParams(window.location.search).get(`id`);
     fetch("http://localhost:8080/api/shop/product/" + id)
       .then(res => res.json())
-      .then(
-        (result) => {
+      .then((result) => {
+          if(result.status === 400){ //Bad request
+            this.props.history.push('/')
+            return
+          } 
+            
           this.setState({
             isLoaded: true,
             item: result

@@ -10,12 +10,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
-public class CustomerServiceImpl implements CustomerService{
+public class CustomerServiceImpl implements CustomerService {
     private final CustomerRepository customerRepository;
+    private final AddressService addressService;
 
     @Autowired
-    public CustomerServiceImpl(CustomerRepository customerRepository) {
+    public CustomerServiceImpl(CustomerRepository customerRepository, AddressService addressService) {
         this.customerRepository = customerRepository;
+        this.addressService = addressService;
     }
 
     @Override
@@ -26,7 +28,7 @@ public class CustomerServiceImpl implements CustomerService{
     @Override
     public Customer findCustomerByUserName(String username) {
         Customer customer = customerRepository.findByUserName(username);
-        if(customer == null)
+        if (customer == null)
             throw new NotFoundExecptionHandle("Could not found customer with username: " + username);
         return customer;
     }
@@ -34,7 +36,7 @@ public class CustomerServiceImpl implements CustomerService{
     @Override
     public Customer findCustomerById(int id) {
         return customerRepository.findById(id)
-            .orElseThrow(() -> new NotFoundExecptionHandle("Could not found customer: " + id));
+                .orElseThrow(() -> new NotFoundExecptionHandle("Could not found customer: " + id));
     }
 
     @Override
@@ -45,15 +47,22 @@ public class CustomerServiceImpl implements CustomerService{
     @Override
     public Customer updateCustomer(Customer newCustomer) {
         int id = newCustomer.getId();
-        return customerRepository.findById(id)
-            .map(customer -> {
-                customer.setFirst_name(newCustomer.getFirst_name());
-                customer.setLast_name(newCustomer.getLast_name());
-                customer.setBirth_day(newCustomer.getBirth_day());
+        return customerRepository.findById(id).map(customer -> {
+            customer.setFirst_name(newCustomer.getFirst_name());
+            customer.setPhone(newCustomer.getPhone());
+            customer.setLast_name(newCustomer.getLast_name());
+            customer.setBirth_day(newCustomer.getBirth_day());
+            if (customer.getAddress() == null) {
+                addressService.saveAddress(newCustomer.getAddress());
                 customer.setAddress(newCustomer.getAddress());
-                return customerRepository.save(customer);
-            })
-            .orElseThrow(() -> new NotFoundExecptionHandle("Could not found customer: " + id));
+            } else {
+                if (!customer.getAddress().equals(newCustomer.getAddress())) {
+                    addressService.saveAddress(newCustomer.getAddress());
+                    customer.setAddress(newCustomer.getAddress());
+                }
+            }
+            return customerRepository.save(customer);
+        }).orElseThrow(() -> new NotFoundExecptionHandle("Could not found customer: " + id));
     }
 
     @Override

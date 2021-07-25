@@ -11,6 +11,8 @@ import javax.persistence.Table;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import lombok.Getter;
 import lombok.Setter;
 
@@ -18,25 +20,26 @@ import lombok.Setter;
 @Getter
 @Setter
 @Table(name = "address")
+@JsonIgnoreProperties({"hibernateLazyInitializer","handler"})
 public class Address implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
 
     @NotBlank(message = "City should not be null or blank")
-    @Size(min = 3, max = 50)
+    @Size(min = 2, max = 50)
     private String city;
 
     @NotBlank(message = "District should not be null or blank")
-    @Size(min = 3, max = 50)
+    @Size(min = 2, max = 50)
     private String district;
 
     @NotBlank(message = "Ward should not be null or blank")
-    @Size(min = 3, max = 50)
+    @Size(min = 2, max = 50)
     private String ward;
 
     @NotBlank(message = "Street should not be null or blank")
-    @Size(min = 3, max = 50)
+    @Size(min = 2, max = 50)
     private String street;
 
     public Address() {

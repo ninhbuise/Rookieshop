@@ -6,9 +6,11 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Lob;
 import javax.persistence.Table;
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.Size;
+
+import org.hibernate.annotations.Type;
 
 import lombok.Data;
 
@@ -20,10 +22,12 @@ public class Image implements Serializable {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
 
-    @NotBlank
-    @Size(min = 3, max = 90, message = "alt should be in range 3-90")
+    @Lob
+    @Type(type = "text")
     private String alt;
-
-    @Size(min = 3, max = 90, message = "alt should be in range 3-90")
+    
+    @Lob
+    @Type(type = "text")
+    @NotBlank
     private String url;
 }

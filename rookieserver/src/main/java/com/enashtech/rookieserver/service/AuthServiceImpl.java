@@ -1,5 +1,6 @@
 package com.enashtech.rookieserver.service;
 
+import java.util.GregorianCalendar;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -9,6 +10,7 @@ import com.enashtech.rookieserver.entity.RoleName;
 import com.enashtech.rookieserver.entity.User;
 import com.enashtech.rookieserver.handleException.RuntimeExceptionHandle;
 import com.enashtech.rookieserver.entity.AdminDTO;
+import com.enashtech.rookieserver.entity.Customer;
 import com.enashtech.rookieserver.entity.CustomerDTO;
 import com.enashtech.rookieserver.entity.Role;
 import com.enashtech.rookieserver.payload.request.LoginRequest;
@@ -79,11 +81,11 @@ public class AuthServiceImpl implements AuthService{
 
     @Override
     public ResponseEntity<?> register(CustomerDTO customerDTO) {
-        if (userService.existsByUsername(customerDTO.getUsername())) {
-            return ResponseEntity
-                .badRequest()
-                .body(new MessageResponse("Error: Username is already taken!"));
-        }
+        // if (userService.existsByUsername(customerDTO.getUsername())) {
+        //     return ResponseEntity
+        //         .badRequest()
+        //         .body(new MessageResponse("Error: Username is already taken!"));
+        // }
         
         if(customerService.existsByEmail(customerDTO.getEmail())) {
             return ResponseEntity
@@ -91,14 +93,14 @@ public class AuthServiceImpl implements AuthService{
             .body(new MessageResponse("Error: Email is already taken!"));
         }
 
-        if(customerService.existsByPhone(customerDTO.getPhone())) {
-            return ResponseEntity
-            .badRequest()
-            .body(new MessageResponse("Error: Phone is already taken!"));
-        }
+        // if(customerService.existsByPhone(customerDTO.getPhone())) {
+        //     return ResponseEntity
+        //     .badRequest()
+        //     .body(new MessageResponse("Error: Phone is already taken!"));
+        // }
         
         // Create new user's account
-        User user = new User(customerDTO.getUsername(),
+        User user = new User(customerDTO.getEmail(),
                              encoder.encode(customerDTO.getPassword()));
 
         Set<Role> roles = new HashSet<>();
@@ -107,6 +109,14 @@ public class AuthServiceImpl implements AuthService{
         roles.add(userRole);
         user.setRoles(roles);
         userService.saveUser(user);
+
+        Customer customer = new Customer();
+        customer.setFirst_name(customerDTO.getFirst_name());
+        customer.setLast_name(customerDTO.getLast_name());
+        customer.setEmail(customerDTO.getEmail());
+        customer.setBirth_day(new GregorianCalendar(2000, 1, 18).getTime());
+        customer.setUser(user);
+        customerService.saveCustomer(customer);
         return ResponseEntity.ok(new MessageResponse("User registered successfully!"));
     }
 

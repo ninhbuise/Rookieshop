@@ -2,6 +2,7 @@ package com.enashtech.rookieserver.service;
 
 import java.util.List;
 
+import com.enashtech.rookieserver.entity.Image;
 import com.enashtech.rookieserver.entity.User;
 
 public interface UserService {
@@ -10,6 +11,7 @@ public interface UserService {
     public User getUserByUsername(String username);
     public User saveUser(User newUser);
     public User updateUser(User newUser);
+    public User updateUserAvatar(Image avatar, String username);
     public User updateUserStatus(int id, String status);
     public User updateUserRole(int id, List<String> roles);
     public void deleteUser(int id);

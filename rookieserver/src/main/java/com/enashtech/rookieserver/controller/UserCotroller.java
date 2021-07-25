@@ -4,6 +4,7 @@ import java.util.List;
 
 import javax.validation.Valid;
 
+import com.enashtech.rookieserver.entity.Image;
 import com.enashtech.rookieserver.entity.User;
 import com.enashtech.rookieserver.service.UserService;
 
@@ -31,9 +32,15 @@ public class UserCotroller {
         this.userService = userService;
     }
 
-    @PutMapping("/users/{id}")
+    @PutMapping("/user")
     User updateUser(@Valid @RequestBody User newUser) {
         return userService.updateUser(newUser);
+    }
+
+    @PutMapping("/user-avatar")
+    @ResponseBody
+    User updateUserAvatar(@Valid @RequestBody Image avatar, Authentication authentication) {
+        return userService.updateUserAvatar(avatar, authentication.getName());
     }
 
     @GetMapping("/users")

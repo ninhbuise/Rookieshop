@@ -1,13 +1,15 @@
 import React from 'react';
 
 import FormInput from '../form-input/form-input.component';
+import { withRouter } from 'react-router-dom';
 
 import { SignUpContainer, SignUpTitle } from './sign-up.styles';
 import { Button } from 'reactstrap';
+import { post } from "../../HttpHelper";
 
 class SignUp extends React.Component {
-    constructor() {
-        super();
+    constructor(props) {
+        super(props);
 
         this.state = {
             firstname: '',
@@ -23,10 +25,39 @@ class SignUp extends React.Component {
 
         const { firstname, lastname, email, password, confirmPassword } = this.state;
 
+        if (firstname.length < 3 && firstname.length > 30) {
+            alert("Cutomer's fist name  should be in range 3-30")
+            return;
+        }
+
+        if (lastname.length < 3 && lastname.length > 30) {
+            alert("Cutomer's fist name  should be in range 3-30")
+            return;
+        }
+
         if (password !== confirmPassword) {
             alert("passwords don't match");
             return;
         }
+
+        if (password.length < 6 && password.length > 40) {
+            alert("Password should be in range 6-40");
+            return;
+        }
+
+        await post('/api/auth/signup', {
+            "email": email,
+            "password": password,
+            "first_name": firstname,
+            "last_name": lastname
+        })
+        .catch(err => {
+            if (err.response !== undefined)
+                alert(JSON.stringify(err.response.data.message))
+            console.error(err)
+        })
+        await this.props.history.push('/')
+        await alert("Registered successfully!")
     };
 
     handleChange = event => {
@@ -89,4 +120,4 @@ class SignUp extends React.Component {
     }
 }
 
-export default SignUp;
+export default withRouter(SignUp)

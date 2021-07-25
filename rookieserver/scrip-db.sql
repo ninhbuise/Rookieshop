@@ -5,10 +5,10 @@ VALUES (
 		'Đà Lạt',
 		'Tổ Lầm Văn Thạch',
 		'P11'
-	)
+	);
 INSERT INTO public.color (id, color_name, hex_code)
-VALUES (1, 'Trắng', '#FFFFFF'),
-	(2, 'Đen', '#000000');
+VALUES (1, 'White', '#FFFFFF'),
+	(2, 'Black', '#000000');
 INSERT INTO public.users (id, "password", status, username, avatar)
 VALUES (
 		1,
@@ -48,7 +48,7 @@ VALUES (
 		'Ngọc',
 		'Nguyễn',
 		'0339737498',
-		89,
+		79,
 		3
 	);
 INSERT INTO public.image (id, alt, url)

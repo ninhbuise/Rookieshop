@@ -45,7 +45,7 @@ public class CustomerController {
         return customerService.saveCustomer(newCustomer);
     }
 
-    @PutMapping("/customer/{id}")
+    @PutMapping("/customer")
     Customer updatCustomer(@Valid @RequestBody Customer newCustomer) {
         return customerService.updateCustomer(newCustomer);
     }

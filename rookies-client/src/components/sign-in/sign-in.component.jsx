@@ -43,13 +43,12 @@ class SignIn extends React.Component {
           error: 'Invalid usernmae or password'
         })
       })
-    await this.saveCustomer()
-    await this.props.history.push('/')
+      await this.saveCustomer()
+      await this.props.history.push('/')
   }
 
   handleChange = event => {
     const { value, name } = event.target;
-
     this.setState({ [name]: value });
   };
 

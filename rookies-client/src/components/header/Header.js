@@ -10,11 +10,10 @@ class Header extends react.Component {
     const token = localStorage.getItem('token');
     token === null ?
       this.props.history.push('/signin') :
-      this.props.history.push('/')
+      this.props.history.push('/profile')
   }
 
   render() {
-    
     return (
       <header style={{
         position: "sticky",
