@@ -18,6 +18,9 @@ class SignIn extends React.Component {
       error: '',
       user: []
     };
+    const token = localStorage.getItem('toekn')
+    if(token != null)
+      this.props.history.push('/')
   }
 
   handleSubmit = async event => {
@@ -28,23 +31,22 @@ class SignIn extends React.Component {
       username: username,
       password: password
     })
-      .then(response => {
-        try {
-          localStorage.setItem('token', response.data.token)
-          localStorage.setItem('roles', JSON.stringify(response.data.roles))
-        } catch (error) {
-          return this.setState({
-            error: error
-          })
-        }
-      })
-      .catch(error => {
-        this.setState({
-          error: 'Invalid usernmae or password'
+    .then(response => {
+      try {
+        localStorage.setItem('token', response.data.token)
+        localStorage.setItem('roles', JSON.stringify(response.data.roles))
+      } catch (error) {
+        return this.setState({
+          error: error
         })
+      }
+    })
+    .catch(() => {
+      this.setState({
+        error: 'Invalid usernmae or password'
       })
-      await this.saveCustomer()
-      await this.props.history.push('/')
+    })
+    await this.saveCustomer();
   }
 
   handleChange = event => {
@@ -54,24 +56,29 @@ class SignIn extends React.Component {
 
   saveCustomer() {
     const roles = JSON.parse(localStorage.getItem('roles'))
-    roles.map(role => {
-      if (role === "ROLE_CUSTOMER") {
-        //get customer data
-        get('/api/v1/customer')
-          .then(response => {
-            localStorage.setItem('user', JSON.stringify({
-              name: response.data.last_name + ' ' + response.data.first_name,
-              phone: response.data.phone,
-              city: response.data.address.city,
-              district: response.data.address.district,
-              ward: response.data.address.ward,
-              street: response.data.address.street
-            }))
-          }).catch(error => {
-            console.error(error)
-          })
-      }
-    })
+    if (roles != null)
+      roles.map(role => {
+        if (role === "ROLE_CUSTOMER") {
+          //get customer data
+          get('/api/v1/customer')
+            .then(response => {
+              localStorage.setItem('user', JSON.stringify({
+                name: response.data.last_name + ' ' + response.data.first_name,
+                phone: response.data.phone,
+                city: response.data.address.city,
+                district: response.data.address.district,
+                ward: response.data.address.ward,
+                street: response.data.address.street
+              }),
+                this.props.history.push('/'))
+            }).catch(error => {
+              console.error(error)
+            });
+        }
+        else if (role === "ROLE_ADMIN") {
+          this.props.history.push('/admin')
+        } else this.props.history.push('/shop')
+      })
   }
 
   render() {

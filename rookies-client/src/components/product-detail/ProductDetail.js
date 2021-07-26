@@ -7,6 +7,7 @@ import { Button, ButtonGroup } from 'reactstrap';
 
 import 'react-gallery-carousel/dist/index.css';
 import './ProductDetail.scss';
+import Header from "../header/Header";
 
 class ProductDetail extends React.Component {
   constructor(props) {
@@ -100,6 +101,7 @@ class ProductDetail extends React.Component {
     const item = this.state.item
     return (
       <div>
+        <Header/>
         <div class="page-heading products-heading header-text">
           <div class="container">
             <div class="row">

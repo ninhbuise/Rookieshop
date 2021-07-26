@@ -10,6 +10,7 @@ import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle'
+import Header from "../header/Header";
 
 import './CheckOut.scss'
 import trash from '../../assets/trash.svg'
@@ -103,6 +104,7 @@ class CheckOut extends React.Component {
     let total = 0
     return (
       <div>
+        <Header/>
         <div class="banner header-text">
           <div class="owl-banner owl-carousel">
             <div class="banner-item-02">

@@ -1,6 +1,7 @@
 import react from 'react'
 import { get } from "../../HttpHelper";
 import ProductItem from '../product-item/Product-item'
+import Header from "../header/Header";
 
 class Product extends react.Component {
   constructor(props) {
@@ -30,6 +31,7 @@ class Product extends react.Component {
     const items = this.state.items;
     return (
       <div>
+        <Header/>
         <div class="banner header-text">
           <div class="owl-banner owl-carousel">
             <div class="banner-item-01">

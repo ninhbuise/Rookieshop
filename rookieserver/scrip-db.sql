@@ -99,7 +99,7 @@ VALUES (2, 'M'),
 	(1, 'L'),
 	(3, 'XL');
 INSERT INTO public.store (id, "name", address_id, "owner")
-VALUES (1, 'Shop Cá Cơm', NULL, 3);
+VALUES (1, 'Shop Cá Cơm', NULL, 2);
 INSERT INTO public.user_roles (user_id, role_id)
 VALUES (1, 3),
 	(2, 2),
