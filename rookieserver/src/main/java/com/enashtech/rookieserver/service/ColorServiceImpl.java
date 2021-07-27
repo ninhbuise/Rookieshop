@@ -1,5 +1,7 @@
 package com.enashtech.rookieserver.service;
 
+import java.util.List;
+
 import com.enashtech.rookieserver.entity.Color;
 import com.enashtech.rookieserver.handleException.NotFoundExecptionHandle;
 import com.enashtech.rookieserver.repository.ColorRepository;
@@ -20,6 +22,11 @@ public class ColorServiceImpl implements ColorService {
     public Color findByColorId(int id) {
         return colorRepository.findById(id)
                 .orElseThrow(() -> new NotFoundExecptionHandle("Could not found color: " + id));
+    }
+
+    @Override
+    public List<Color> getAllColors() {
+        return colorRepository.findAll();
     }
 
 }

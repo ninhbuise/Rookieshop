@@ -1,5 +1,7 @@
 package com.enashtech.rookieserver.service;
 
+import java.util.List;
+
 import com.enashtech.rookieserver.entity.Size;
 import com.enashtech.rookieserver.handleException.NotFoundExecptionHandle;
 import com.enashtech.rookieserver.repository.SizeRepository;
@@ -20,6 +22,11 @@ public class SizeServiceImpl implements SizeService {
     public Size findSizeById(int id) {
         return sizeRepository.findById(id)
                 .orElseThrow(() -> new NotFoundExecptionHandle("Could not found size: " + id));
+    }
+
+    @Override
+    public List<Size> getAllSize() {
+        return sizeRepository.findAll();
     }
 
 }

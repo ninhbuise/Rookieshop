@@ -4,11 +4,22 @@ import { Button, Table } from 'reactstrap';
 import { withRouter } from 'react-router-dom';
 import { ProSidebar, Menu, MenuItem, SubMenu } from 'react-pro-sidebar';
 import Carousel from 'react-gallery-carousel';
-import 'react-pro-sidebar/dist/scss/styles.scss';
+
+
+import { ValidatorForm, TextValidator } from 'react-material-ui-form-validator';
+import Dialog from '@material-ui/core/Dialog';
+import DialogActions from '@material-ui/core/DialogActions';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogContentText from '@material-ui/core/DialogContentText';
+import DialogTitle from '@material-ui/core/DialogTitle'
+import Checkbox from '@material-ui/core/Checkbox';
+import FormGroup from '@material-ui/core/FormGroup';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
 
 import './shop.scss'
 import crown from '../../assets/crown.svg'
 import research from '../../assets/research.svg'
+import 'react-pro-sidebar/dist/scss/styles.scss';
 
 class Shop extends React.Component {
   constructor(props) {
@@ -22,14 +33,49 @@ class Shop extends React.Component {
     else this.props.history.push('/')
     this.state = {
       products: [],
+      sizes: [],
+      colors: [],
+      types: [],
+      ishow: false
     }
   }
 
-  async componentDidMount() {
-    await get('/api/v1/shop/products')
+  componentDidMount() {
+    //get shop's product list
+    get('/api/v1/shop/products')
       .then(response => {
         this.setState({
           products: response.data
+        })
+      })
+      .catch(error => {
+        console.error(error)
+      })
+    //get product types
+    get('/api/shop/type')
+      .then(response => {
+        this.setState({
+          types: response.data
+        })
+      })
+      .catch(error => {
+        console.error(error)
+      })
+    //get product colors
+    get('/api/shop/color')
+      .then(response => {
+        this.setState({
+          colors: response.data
+        })
+      })
+      .catch(error => {
+        console.error(error)
+      })
+    //get product sizes
+    get('/api/shop/size')
+      .then(response => {
+        this.setState({
+          sizes: response.data
         })
       })
       .catch(error => {
@@ -53,7 +99,7 @@ class Shop extends React.Component {
             <Menu iconShape="square">
               <MenuItem icon={<img src={crown} />}>Dashboard</MenuItem><hr></hr>
               <SubMenu title="Setting" icon="</>">
-                <MenuItem>Add new product</MenuItem>
+                <MenuItem onClick={() => this.setState({ ishow: true })}>Add new product</MenuItem>
                 <MenuItem onClick={() => this.handleLogout()} >Logout</MenuItem>
               </SubMenu>
             </Menu>
@@ -72,7 +118,7 @@ class Shop extends React.Component {
                 <th>Color</th>
                 <th>Price</th>
                 <th>Quantity</th>
-                <th><img style={{height: 30}} src={research}/></th>
+                <th><img style={{ height: 30 }} src={research} /></th>
               </tr>
             </thead>
             <tbody>
@@ -89,7 +135,7 @@ class Shop extends React.Component {
                     colors.push("[" + color.color_name + "] ")
                   });
                   product.sizes.map(size => {
-                    sizes.push("[" + size.size_name+ "] ")
+                    sizes.push("[" + size.size_name + "] ")
                   });
                   return (
                     <tr>
@@ -118,13 +164,54 @@ class Shop extends React.Component {
                       <td><img style={{
                         height: 30,
                         cursor: 'pointer'
-                        }} src={research}/></td>
+                      }} src={research} /></td>
                     </tr>
                   )
                 })
               }
             </tbody>
           </Table>
+          <Dialog open={this.state.ishow} aria-labelledby="form-dialog-title">
+            <DialogTitle id="form-dialog-title">New Product!</DialogTitle>
+            <DialogContent>
+              <DialogContentText>
+                Product info
+              </DialogContentText>
+              <ValidatorForm
+                ref="form"
+                onSubmit={() => this.setState({ ishow: false })}
+                noValidate={true}
+              >
+                <TextValidator
+                  value=''
+                  validators={['required']}
+                  errorMessages={['this field is required']}
+                  onChange={(event) => {
+                    this.setState({
+
+                    })
+                  }}
+                  label="Name"
+                  type="text" />
+                <FormControlLabel
+                  control={<Checkbox name="antoine" />}
+                  label="Antoine Llorca"
+                />
+                <Checkbox
+                  value="checkedA"
+                  inputProps={{ 'aria-label': 'Checkbox A' }}
+                />
+                <DialogActions>
+                  <Button onClick={() => this.setState({ ishow: false })} >
+                    Cancel
+                  </Button>
+                  <Button type="submit" color="primary">
+                    Submit
+                  </Button>
+                </DialogActions>
+              </ValidatorForm>
+            </DialogContent>
+          </Dialog>
         </div>
       </div>
     )
