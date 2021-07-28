@@ -82,13 +82,14 @@ class ProductDetail extends React.Component {
     })
     if (!isExit) {
       //if not add product to cart and save to localstorage
+      console.log(this.state.sizes)
       const item = {
         id: this.state.item.id,
         name: this.state.item.name,
         price: this.state.item.price,
         url: this.state.item.images[0].url,
-        size_id: this.state.sizes[this.state.sizeSelected].id,
-        color_id: this.state.colors[this.state.colorSelected].id,
+        size_id: this.state.sizes.length > 0 ? this.state.sizes[this.state.sizeSelected].id : 0,
+        color_id:  this.state.colors.length > 0 ? this.state.colors[this.state.colorSelected].id : 0,
         amount: this.state.value,
       }
       cart.push(item)

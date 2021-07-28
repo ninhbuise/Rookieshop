@@ -92,6 +92,7 @@ class CheckOut extends React.Component {
     }
     post('/api/shop/order', body)
       .then(response => {
+        console.log(response.data)
         this.setState({ notice: "Order Success ^^", cart: [], shownotice: true })
         localStorage.removeItem('cart')
       })
@@ -104,7 +105,7 @@ class CheckOut extends React.Component {
     let total = 0
     return (
       <div>
-        <Header/>
+        <Header />
         <div class="banner header-text">
           <div class="owl-banner owl-carousel">
             <div class="banner-item-02">
@@ -130,7 +131,7 @@ class CheckOut extends React.Component {
                       <div>
                         <div className="row">
                           <div className="col-md-10">
-                            <Table>
+                            <Table style={{width: '98%'}}>
                               <thead>
                                 <tr>
                                   <th>#</th>
@@ -206,7 +207,7 @@ class CheckOut extends React.Component {
                                 <ValidatorForm
                                   ref="form"
                                   onSubmit={() => this.setState({ showfrom: false, user: this.state.usertemp })}
-                                  noValidate={true} 
+                                  noValidate={true}
                                 >
                                   <TextValidator
                                     style={{ margin: 12, width: 400 }}
@@ -318,7 +319,7 @@ class CheckOut extends React.Component {
                             <span>{this.state.user.name} | {this.state.user.phone}</span>
                             <p>{this.state.user.city}, {this.state.user.district}, {this.state.user.ward}, {this.state.user.street}</p>
                             <hr></hr>
-                            <Table>
+                            <Table style={{ margin: '0px' }}>
                               <tr>
                                 <td></td>
                                 <td></td>

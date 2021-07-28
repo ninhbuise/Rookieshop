@@ -58,8 +58,14 @@ public class OrderServiceImpl implements OrderService {
                 orderDetail.setAmount(detail.getAmount());
                 product.setQuantity(remaining_amount);
                 orderDetail.setProduct(product);
-                orderDetail.setColor(colorService.findByColorId(detail.getColor_id()));
-                orderDetail.setSize(sizeService.findSizeById(detail.getSize_id()));
+                if (detail.getColor_id() > 0)
+                    orderDetail.setColor(colorService.findByColorId(detail.getColor_id()));
+                else
+                    orderDetail.setColor(null);
+                if (detail.getSize_id() > 0)
+                    orderDetail.setSize(sizeService.findSizeById(detail.getSize_id()));
+                else 
+                    orderDetail.setSize(null);
                 orderDetails.add(orderDetail);
             } else {
                 throw new RuntimeExceptionHandle(

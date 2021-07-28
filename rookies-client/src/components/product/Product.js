@@ -31,7 +31,7 @@ class Product extends react.Component {
     const items = this.state.items;
     return (
       <div>
-        <Header/>
+        <Header />
         <div class="banner header-text">
           <div class="owl-banner owl-carousel">
             <div class="banner-item-01">

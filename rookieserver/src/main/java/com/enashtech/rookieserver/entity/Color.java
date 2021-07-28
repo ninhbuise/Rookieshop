@@ -10,11 +10,14 @@ import javax.persistence.Table;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import lombok.Data;
 
 @Entity
 @Data
 @Table(name = "color")
+@JsonIgnoreProperties({"hibernateLazyInitializer","handler"})
 public class Color implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)

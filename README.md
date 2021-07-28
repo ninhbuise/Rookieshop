@@ -75,9 +75,10 @@ Follow the following steps to get development environment running.
 
 
 ### Starting back-end servers
+* Install database with scrip-db.sql ..\Rookieshop\ before run backend-server
 * Run spring boost server
-
 Go to src ..\Rookieshop\rookieserver\src\main\java\com\enashtech
+```
 Run file RookieserverApplication.java
-
+```
 * Required JDK 11

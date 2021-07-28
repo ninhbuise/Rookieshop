@@ -9,6 +9,8 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.validation.constraints.NotBlank;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import org.hibernate.validator.constraints.Length;
 
 import lombok.Data;
@@ -16,6 +18,7 @@ import lombok.Data;
 @Entity
 @Data
 @Table(name = "sizes")
+@JsonIgnoreProperties({"hibernateLazyInitializer","handler"})
 public class Size implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
